@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "574930189697",
+    "project_id": "piklo-f696e",
+    "storage_bucket": "piklo-f696e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:574930189697:android:06bbd7e2e6f4b2e821bc80",
+        "android_client_info": {
+          "package_name": "com.piklo.driver"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "574930189697-6944307tk95a1dp1j7sb04sbvihamauu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJVZTMYYPkQKxs1ILpjV5ATRcBw54eXLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "574930189697-6944307tk95a1dp1j7sb04sbvihamauu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
