@@ -1,13 +1,10 @@
 
 import * as React from 'react';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Image,KeyboardAvoidingView , TextInput,ImageBackground , StatusBar,TouchableWithoutFeedback ,Keyboard,Dimensions} from 'react-native';
-import styles from './styles';
-import logo from '../../../assets/app/logo_1.png';
+import {Text, TouchableOpacity, View,Dimensions, ActivityIndicator} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import ElevatedView from 'react-native-elevated-view';
-import { Icon } from 'react-native-elements';
+
 import { useForm, Controller,FormProvider } from "react-hook-form";
-//import {Verify} from '../verify/verify'
+import firebase from '../../firebase';
 
 // Theme Elements
 import ThemeInput from '../../theme/form/Input'
@@ -15,50 +12,60 @@ import ThemeCheckBox from '../../theme/form/CheckBox'
 import OTPFiller from '../../theme/form/OTPFiller'
 import theme from '../../theme/style'
 
-import SCREEN_HEADER from '../../../assets/app/header_branding_1.png'
-import nine_box from '../../../assets/icons/9box.png'
+import ThemeButton from '../../theme/buttons';
+import { Overlay } from 'react-native-elements';
+import { connect } from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-export default  function VerifyMobile (props){
-
+function VerifyMobile (props){
+  const { data } = props.route.params;
+  const [visible, setVisible] = React.useState(false);
   const formMethods = useForm();
-  const [passwordView, setPassworView] = React.useState(true);
-  const onSubmit = data => console.log(data);
+  const onSubmit = async (code) => {
+    //setVisible(true);
+    try {
+      const credential = firebase.auth.PhoneAuthProvider.credential(
+        data.verificationId,
+        code
+      );
+      await firebase.auth().signInWithCredential(credential);
+      props.setLogin(true)
+    } catch (err) {
+      console.log(err)
+    }
+};
 
   const getInputValue =(value) =>{
     console.log(value)
   }
+
   return(
     <>
-    <StatusBar backgroundColor="#126D5D" barStyle={'light-content'} />
-
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
+      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
 
 
           {/* Sign In */}
           <View style={{padding:30}}>
-          <Text style={{...theme.f_32,...theme.orange}}>Verify Mobile</Text>
-          <Text style={{...theme.f_18,...theme.gray}}>Enter OTP code sent by SMS</Text>
+            <Text style={{
+              ...theme.f_32,
+              ...theme.theme_heading_color,
+              fontWeight: 'bold',
+              marginTop: 30,
+            }}>Verify Mobile</Text>
+            <Text style={{ ...theme.f_18, ...theme.gray}}>Enter OTP code sent by SMS</Text>
             <FormProvider {...formMethods}>
               <OTPFiller
-                callback={(v)=>{console.log(v)}}
-                inputLength={4}
-              containerStyle={{...theme.mt_30}}
-                inputStyle={{borderColor:'#D6D6D6',borderBottomWidth:4,width:40,fontSize:30,textAlign:'center',paddingVertical:7,color:'#126D5D'}}/>
+                callback={(v)=>{
+                  if(v.length == 6){
+
+                  }
+                }}
+                inputLength={6}
+                containerStyle={{...theme.mt_30}}
+              inputStyle={{ borderColor: '#D6D6D6', borderBottomWidth: 4, width: 40, fontSize: 30, textAlign: 'center', paddingVertical: 7, color:'#CB587F'}}/>
             </FormProvider>
-            <TouchableOpacity onPress={()=>{props.navigation.navigate('SignUp')}}
-              style={{
-                ...theme.w_100,
-                ...theme.p_15,
-                ...theme.mt_20,
-                ...theme.align_center,
-                ...theme.w_100,
-                ...theme.bg_green,
-                borderRadius:5}}
-              >
-                  <Text style={{color:'white'}}>SEND</Text>
-            </TouchableOpacity>
+            <ThemeButton style={{ marginTop: 20, }} text="LOGIN" onPressAction={formMethods.handleSubmit(onSubmit)} />
           </View>
           <View style={{width:'100%',padding:30,alignItems:'center',}}>
                 <View>
@@ -91,8 +98,26 @@ export default  function VerifyMobile (props){
                   </TouchableOpacity>
                 </View>
           </View>
+        <Overlay isVisible={visible} >
+          <ActivityIndicator size="large" color="#FFA253" />
+          <Text>Verifying...</Text>
+        </Overlay>
         </LinearGradient>
 
     </>
     )
   }
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    // dispatching plain actions
+    setLogin: (data) => dispatch({ type: 'SET_LOGIN', payload: data }),
+
+  }
+}
+const mapStateToProps = (state) => {
+  const { user } = state
+  return { user: user }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyMobile)

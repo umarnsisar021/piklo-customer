@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Text, TouchableOpacity, View, StatusBar , Dimensions} from 'react-native';
+import { Text, TouchableOpacity, View, Button , Dimensions} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm,FormProvider } from "react-hook-form";
@@ -19,21 +19,25 @@ import ThemeButton from '../../theme/buttons';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
-import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha';
-// import * as Google from 'expo-google-app-auth';
-// import * as Facebook from 'expo-facebook';
-// import appleAuth, {
-//   AppleButton,
-//   AppleAuthError,
-//   AppleAuthRequestScope,
-//   AppleAuthRequestOperation,
-// } from 'react-native-apple-authentication'
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+
+// Initialize Firebase JS SDK
+// https://firebase.google.com/docs/web/setup
+
 const isInClient = Constants.appOwnership === 'expo';
 function Login (props){
   const formMethods = useForm();
   const [passwordView, setPasswordView] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
   let formErrors = formMethods.formState.errors;
+
+  const recaptchaVerifier = React.useRef(null);
+  const [phoneNumber, setPhoneNumber] = React.useState("+923132500948");
+  const [verificationId, setVerificationId] = React.useState();
+  const [verificationCode, setVerificationCode] = React.useState();
+  const firebaseConfig = firebase.apps.length ? firebase.app().options : undefined;
+
+
 
   const togglePassword= ()=>{
       if(passwordView){
@@ -45,44 +49,61 @@ function Login (props){
   }
 
   const onSubmit = async data => {
-    setVisible(true);
-    data["device_id"] = props.user.device_id;
-    await useJwt.setRefreshCookies();
-    await useJwt.storeData(null)
-    await useJwt.post('drivers/Authentication/login',data).then(async (res)=>{
 
-      if (res.status) {
-        if(res.headers['set-cookie']){
-            await useJwt.storeData(res.headers['set-cookie'])
-            let c = await useJwt.getValue();
-        }
-        props.setUserData(res.data.data.user_detail)
-        props.setToken(res.data.data.token)
-        await useJwt.post('drivers/settings/get_my_profile',data).then(async (res1)=>{
-           props.setUserProfile(res1.data.data)
-           setVisible(false);
-           props.setLogin(true)
+
+        setVisible(true);
+        data["device_id"] = props.user.device_id;
+        await useJwt.setRefreshCookies();
+        await useJwt.storeData(null)
+        await useJwt.post('drivers/Authentication/login',data).then(async (res)=>{
+
+          if (res.status) {
+            if(res.headers['set-cookie']){
+                await useJwt.storeData(res.headers['set-cookie'])
+                let c = await useJwt.getValue();
+            }
+            props.setUserData(res.data.data.user_detail)
+            props.setToken(res.data.data.token)
+            await useJwt.post('drivers/settings/get_my_profile',data).then(async (res1)=>{
+              props.setUserProfile(res1.data.data)
+              setVisible(false);
+              try {
+
+                  const phoneProvider = new firebase.auth.PhoneAuthProvider();
+                  const verificationId = await phoneProvider.verifyPhoneNumber(
+                    res1.data.data.mobile_no,
+                    recaptchaVerifier.current
+                  );
+                  setVerificationId(verificationId);
+                  props.navigation.navigate('VerifyMobile',{
+                    data: { verificationId : verificationId}
+                  })
+                }
+                 catch (err) {
+                  console.log(err)
+                }
+              //props.setLogin(true)
+            })
+
+          }
+        }).catch( (error)=>{
+          setVisible(false);
+          let toast = Toast.show(  error.response.data.message, {
+            duration: Toast.durations.LONG,
+            position: Toast.positions.BOTTOM,
+            shadow: true,
+            animation: true,
+            hideOnPress: true,
+            visible:true,
+            backgroundColor: '#ff9d9d',
+            textColor:'#000000',
+            delay: 0,
+
+          });
+
         })
 
       }
-    }).catch( (error)=>{
-      setVisible(false);
-      let toast = Toast.show(  error.response.data.message, {
-        duration: Toast.durations.LONG,
-        position: Toast.positions.BOTTOM,
-        shadow: true,
-        animation: true,
-        hideOnPress: true,
-        visible:true,
-        backgroundColor: '#ff9d9d',
-        textColor:'#000000',
-        delay: 0,
-
-      });
-
-    })
-
-  }
   //key for google sign in
   const clientIdForUseInTheExpoClient = '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com';
   const getClintID = Platform.select({
@@ -132,23 +153,9 @@ function Login (props){
         identityToken,
       } = appleAuthRequestResponse;
 
-      // you may also want to send the device's ID to your server to link a device with the account
-      //const deviceId = getUniqueId();
-
-      // identityToken generated
       if (identityToken) {
-
-        // send data to server for verification and sign in
-        // const { ack, response } = await authFetch({
-        //   url: 'sign-in-with-apple',
-        //   body: {
-        //     ...appleAuthRequestResponse,
-        //     deviceId: deviceId
-        //   }
-        // });
         if (ack === 'success') {
-          // successfully verified, handle sign in
-          //await handleSignIn(response);
+
         }
       } else {
         // no token, failed sign in
@@ -178,14 +185,6 @@ function Login (props){
       } = await Facebook.logInWithReadPermissionsAsync({
         permissions: ['public_profile',"email"],
       });
-
-      // if (type === 'success') {
-      //   // Get the user's name using Facebook's Graph API
-      //   const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
-      //   Alert.alert('Logged in!', `Hi ${(await response.json()).name}!`);
-      // } else {
-      //   // type === 'cancel'
-      // }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
     }
@@ -194,39 +193,6 @@ function Login (props){
   React.useEffect(()=>{
 
   },[passwordView])
-
-
-
-  const [phoneNumber, setPhoneNumber] = React.useState('+923132500948');
-  const [code, setCode] = React.useState('321489');
-  const [verificationId, setVerificationId] = React.useState(null);
-  const recaptchaVerifier = React.useRef("AJOnW4SP49BvHut3dQY26hOqLT51yctb7BrDyqHQsuXm5sBSkqpOsYfB_oJr6fMlSriU7hjVojjqMEgUIr-ZVnMHDv2XrmBfL8tAx3dZrQw7pxZgPuPHhyTU_yJM_smN3efZZy2PH1J9SuLRI-RThgrFjSxCFoqLnA");
-  // Function to be called when requesting for a verification code
-  const sendVerification = () => {
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    phoneProvider
-      .verifyPhoneNumber(phoneNumber, recaptchaVerifier.current)
-      .then((res)=>{
-        console.log(res)
-      });
-
-  };
-
-  // Function to be called when confirming the verification code that we received
-  // from Firebase via SMS
-  const confirmCode = () => {
-    const credential = firebase.auth.PhoneAuthProvider.credential(
-      verificationId,
-      code
-    );
-    firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then((result) => {
-        // Do something with the results here
-        console.log(result);
-      });
-  }
 
   return(
 
@@ -289,10 +255,6 @@ function Login (props){
               </View>
 
             </FormProvider>
-
-        <TouchableOpacity onPress={confirmCode}>
-              <Text>Send Verification</Text>
-            </TouchableOpacity>
             <ThemeButton style={{marginTop: 20,}}  text="LOGIN" onPressAction={formMethods.handleSubmit(onSubmit)} />
 
           </View>
@@ -336,7 +298,8 @@ function Login (props){
           </View>
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}
-              firebaseConfig={firebase.app().options}
+              firebaseConfig={firebaseConfig}
+
             />
           <Overlay isVisible={visible} >
               <ActivityIndicator size="large" color="#FFA253"  />

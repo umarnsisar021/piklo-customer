@@ -1,5 +1,5 @@
 import * as firebase from 'firebase';
-import '@firebase/auth';
+
 const firebaseConfig = {
     apiKey: "AIzaSyA7p2PgnCk0bOM0q_nnnO-4Yfnq5VTn-KA",
     authDomain: "piklo-f696e.firebaseapp.com",
