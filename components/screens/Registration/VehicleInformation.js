@@ -46,7 +46,7 @@ function VehicleInformation(props) {
 
                     <FormProvider  {...formMethods}>
                         <ThemeInput
-                            MainConatainerStyle={{...theme.mt_25}}
+                            MainContainerStyle={{...theme.mt_25}}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{
@@ -61,7 +61,7 @@ function VehicleInformation(props) {
                         />
                         <ThemeSelect
                             items={[{ value: 'Bike', label: 'Bike' }, { value: 'Car', label: 'Car' }, { value: 'Truck', label: 'Truck' }]}
-                            MainConatainerStyle={{ ...theme.my_10 ,...theme.px_10}}
+                            MainContainerStyle={{ ...theme.my_10 ,...theme.px_10}}
                             InputConatainerStyle={{ width: '100%' }}
                             TextInput={{
                                 placeholder: 'Type',
@@ -73,7 +73,7 @@ function VehicleInformation(props) {
                             error={formErrors.type}
                         />
                         <ThemeInput
-                            MainConatainerStyle={{ ...theme.my_10 }}
+                            MainContainerStyle={{ ...theme.my_10 }}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{
@@ -86,7 +86,7 @@ function VehicleInformation(props) {
                             error={formErrors.brand}
                         />
                         <ThemeInput
-                            MainConatainerStyle={{ ...theme.my_10 }}
+                            MainContainerStyle={{ ...theme.my_10 }}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{
@@ -99,7 +99,7 @@ function VehicleInformation(props) {
                             error={formErrors.make}
                         />
                         <ThemeInput
-                            MainConatainerStyle={{ ...theme.my_10 }}
+                            MainContainerStyle={{ ...theme.my_10 }}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{

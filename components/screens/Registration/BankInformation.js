@@ -42,7 +42,7 @@ function BankInformation(props) {
 
                     <FormProvider  {...formMethods}>
                         <ThemeInput
-                            MainConatainerStyle={{...theme.mt_25}}
+                            MainContainerStyle={{...theme.mt_25}}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{
@@ -55,7 +55,7 @@ function BankInformation(props) {
                             error={formErrors.bank_name}
                         />
                         <ThemeInput
-                            MainConatainerStyle={{ ...theme.my_10 }}
+                            MainContainerStyle={{ ...theme.my_10 }}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{
@@ -69,7 +69,7 @@ function BankInformation(props) {
                             error={formErrors.account_no}
                         />
                         <ThemeInput
-                            MainConatainerStyle={{ ...theme.my_10 }}
+                            MainContainerStyle={{ ...theme.my_10 }}
                             InputConatainerStyle={{ width: '80%' }}
                             Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                             TextInput={{

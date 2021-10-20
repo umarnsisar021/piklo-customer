@@ -13,7 +13,7 @@ import OTPFiller from '../../theme/form/OTPFiller'
 import theme from '../../theme/style'
 
 import ThemeButton from '../../theme/buttons';
-import { Overlay } from 'react-native-elements';
+import { Icon, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -23,7 +23,7 @@ function VerifyMobile (props){
   const [visible, setVisible] = React.useState(false);
   const formMethods = useForm();
   const onSubmit = async (code) => {
-    //setVisible(true);
+    setVisible(true);
     try {
       const credential = firebase.auth.PhoneAuthProvider.credential(
         data.verificationId,
@@ -44,7 +44,18 @@ function VerifyMobile (props){
     <>
       <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
 
-
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.goBack()
+            }}
+            style={{
+              ...theme.py_10,
+              justifyContent: 'flex-start',
+              alignSelf: 'flex-start'
+            }}
+          >
+            <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
+          </TouchableOpacity>
           {/* Sign In */}
           <View style={{padding:30}}>
             <Text style={{
@@ -58,7 +69,7 @@ function VerifyMobile (props){
               <OTPFiller
                 callback={(v)=>{
                   if(v.length == 6){
-
+                    onSubmit(v)
                   }
                 }}
                 inputLength={6}

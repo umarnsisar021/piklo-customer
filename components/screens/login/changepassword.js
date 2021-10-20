@@ -37,7 +37,7 @@ export default  function ChangePassword (props){
           <Text style={{ ...theme.f_18, ...theme.gray }}>Enter new credentials</Text>
             <FormProvider {...formMethods}>
               <ThemeInput
-                MainConatainerStyle={{marginTop:25}}
+                MainContainerStyle={{marginTop:25}}
                 InputConatainerStyle={{ width: '85%' }}
                 Icon={<Icon name='lock-open-outline' type='ionicon' color='#449284'  />}
                 TextInput={{
@@ -50,7 +50,7 @@ export default  function ChangePassword (props){
                 IconRight={<Icon onPress={() => { setPassworView(!passwordView) }} name='eye-outline' type='ionicon' color='gray' />}
               />
                <ThemeInput
-                MainConatainerStyle={{marginTop:0}}
+                MainContainerStyle={{marginTop:0}}
                 InputConatainerStyle={{ width: '85%' }}
                 Icon={<Icon name='lock-open-outline' type='ionicon' color='#449284'  />}
                 TextInput={{

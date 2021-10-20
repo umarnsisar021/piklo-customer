@@ -30,14 +30,9 @@ function Login (props){
   const [passwordView, setPasswordView] = React.useState(true);
   const [visible, setVisible] = React.useState(false);
   let formErrors = formMethods.formState.errors;
-
   const recaptchaVerifier = React.useRef(null);
-  const [phoneNumber, setPhoneNumber] = React.useState("+923132500948");
   const [verificationId, setVerificationId] = React.useState();
-  const [verificationCode, setVerificationCode] = React.useState();
   const firebaseConfig = firebase.apps.length ? firebase.app().options : undefined;
-
-
 
   const togglePassword= ()=>{
       if(passwordView){
@@ -49,8 +44,6 @@ function Login (props){
   }
 
   const onSubmit = async data => {
-
-
         setVisible(true);
         data["device_id"] = props.user.device_id;
         await useJwt.setRefreshCookies();
@@ -100,9 +93,7 @@ function Login (props){
             delay: 0,
 
           });
-
         })
-
       }
   //key for google sign in
   const clientIdForUseInTheExpoClient = '603386649315-vp4revvrcgrcjme51ebuhbkbspl048l9.apps.googleusercontent.com';
@@ -217,7 +208,7 @@ function Login (props){
               }}>Login to your account</Text>
             <FormProvider {...formMethods}>
               <ThemeInput
-                MainConatainerStyle={{marginTop:25}}
+                MainContainerStyle={{marginTop:25}}
                 InputConatainerStyle={{width:'80%'}}
             Icon={<Icon name='apps-outline' type='ionicon' color={theme.black.color}  />}
                 TextInput={{
@@ -230,7 +221,7 @@ function Login (props){
                 error={formErrors.password}
               />
               <ThemeInput
-                MainConatainerStyle={{marginTop:10}}
+                MainContainerStyle={{marginTop:10}}
                 InputConatainerStyle={{ width: '85%' }}
                 Label="Password"
                 Icon={<Icon  name='lock-open-outline' type='ionicon' color={theme.black.color}  />}
@@ -323,5 +314,4 @@ const mapStateToProps = (state) => {
   const { user } = state
   return { user: user }
 }
-
 export default connect(mapStateToProps, mapDispatchToProps)(Login)

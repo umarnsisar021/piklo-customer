@@ -180,7 +180,7 @@ function IdentityAndDocuments(props) {
                                 ...theme.p_0,
                                 ...theme.mt_20,
                             }}>
-                            <ThemeInput MainConatainerStyle={{ ...theme.w_65, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
+                            <ThemeInput MainContainerStyle={{ ...theme.w_65, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -196,7 +196,7 @@ function IdentityAndDocuments(props) {
 
 
                             <ThemeDateTimePicker
-                                MainConatainerStyle={{ ...theme.w_35, ...theme.mt_0, ...theme.mb_0, borderWidth: 0 }}
+                                MainContainerStyle={{ ...theme.w_35, ...theme.mt_0, ...theme.mb_0, borderWidth: 0 }}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='calendar-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -217,7 +217,7 @@ function IdentityAndDocuments(props) {
                                 ...theme.p_0,
                                 ...theme.mt_15,
                             }}>
-                            <ThemeInput MainConatainerStyle={{ ...theme.w_40, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
+                            <ThemeInput MainContainerStyle={{ ...theme.w_40, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
                                 InputConatainerStyle={{width:'80%'}}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -229,7 +229,7 @@ function IdentityAndDocuments(props) {
                                 defaultValue=""
                                 rules={{ required: true }}
                                 error={formErrors.driving_license_no} />
-                            <ThemeInput MainConatainerStyle={{ ...theme.w_25, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
+                            <ThemeInput MainContainerStyle={{ ...theme.w_25, ...theme.mt_0, ...theme.p_0, borderWidth: 0, ...theme.mb_0 }}
                                 InputConatainerStyle={{ width:'80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -241,7 +241,7 @@ function IdentityAndDocuments(props) {
                                 rules={{ required: true }}
                                 error={formErrors.driving_license_class} />
                             <ThemeDateTimePicker
-                                MainConatainerStyle={{ ...theme.w_35, ...theme.mt_0, ...theme.mb_0, borderWidth: 0 ,marginTop:-7}}
+                                MainContainerStyle={{ ...theme.w_35, ...theme.mt_0, ...theme.mb_0, borderWidth: 0 ,marginTop:-7}}
                                 InputConatainerStyle={{ width: '80%',}}
                                 Icon={<Icon name='calendar-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -258,7 +258,7 @@ function IdentityAndDocuments(props) {
                         </View>
                         <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.mt_10, }}>
                             <ThemeInput
-                                MainConatainerStyle={{}}
+                                MainContainerStyle={{}}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{

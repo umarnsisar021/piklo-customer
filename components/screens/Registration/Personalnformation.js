@@ -117,7 +117,7 @@ const Personalnformation =(props)=> {
                         <FormProvider {...formMethods}>
 
                             <ThemeInput
-                                MainConatainerStyle={{ marginTop: 25 }}
+                                MainContainerStyle={{ marginTop: 25 }}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -129,7 +129,7 @@ const Personalnformation =(props)=> {
                                 error={formErrors.first_name}
                             />
                             <ThemeInput
-                                MainConatainerStyle={{}}
+                                MainContainerStyle={{}}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -141,7 +141,7 @@ const Personalnformation =(props)=> {
 
                             />
                             <ThemeInput
-                                MainConatainerStyle={{}}
+                                MainContainerStyle={{}}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='reorder-three-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -153,7 +153,7 @@ const Personalnformation =(props)=> {
                                 error={formErrors.last_name}
                             />
                             <ThemeInput
-                                MainConatainerStyle={{}}
+                                MainContainerStyle={{}}
                                 InputConatainerStyle={{ width: '80%' }}
                                 Icon={<Icon name='apps-outline' type='ionicon' color='#449284' />}
                                 TextInput={{
@@ -170,7 +170,7 @@ const Personalnformation =(props)=> {
 
                             <View style={{ ...theme.row, ...theme.jc_space_between, }}>
                                 <Dropdown
-                                    MainConatainerStyle={{ width: '48%', marginTop: 0 }}
+                                    MainContainerStyle={{ width: '48%', marginTop: 0 }}
                                     InputConatainerStyle={{ width: '100%' }}
                                     Icon={<Icon name='man-outline' type='ionicon' color='#449284' />}
                                     TextInput={{
@@ -184,7 +184,7 @@ const Personalnformation =(props)=> {
                                     error={formErrors.gender}
                                 />
                                 <ThemeDateTimePicker
-                                    MainConatainerStyle={{ width: '48%', marginTop: 0 }}
+                                    MainContainerStyle={{ width: '48%', marginTop: 0 }}
                                     InputConatainerStyle={{ width: '80%' }}
                                     Icon={<Icon name='calendar-outline' type='ionicon' color='#449284' />}
                                     TextInput={{
@@ -199,7 +199,7 @@ const Personalnformation =(props)=> {
                             </View>
                             <View style={{ ...theme.row, ...theme.jc_space_between, }}>
                                 <Dropdown
-                                    MainConatainerStyle={{ width: '48%', marginTop: 0 }}
+                                    MainContainerStyle={{ width: '48%', marginTop: 0 }}
                                     InputConatainerStyle={{ width: '100%' }}
                                     Icon={<Icon name='man-outline' type='ionicon' color='#449284' />}
                                     TextInput={{
@@ -228,7 +228,7 @@ const Personalnformation =(props)=> {
                                     error={formErrors.nationality_id}
                                 />
                                 <Dropdown
-                                    MainConatainerStyle={{ width: '48%', marginTop: 0 }}
+                                    MainContainerStyle={{ width: '48%', marginTop: 0 }}
                                     InputConatainerStyle={{ width: '100%' }}
                                     Icon={<Icon name='man-outline' type='ionicon' color='#449284' />}
                                     TextInput={{

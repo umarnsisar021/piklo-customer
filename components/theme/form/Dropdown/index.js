@@ -48,7 +48,7 @@ export default function Dropdown(props) {
         ).start();
     }
     return (
-        <View style={{ marginVertical: 7, width: '100%', borderColor: error ? theme.purple.color : '#E9E8E8', borderBottomWidth: 1, ...props.MainConatainerStyle }}>
+        <View style={{ marginVertical: 7, width: '100%', borderColor: error ? theme.purple.color : '#E9E8E8', borderBottomWidth: 1, ...props.MainContainerStyle }}>
             {props.Label ? <Animated.View style={{
                 opacity: 1
             }}><Text style={{ ...props.IconStyle, color: '#a2a2a2' }}>{props.Label}</Text></Animated.View> : <></>}

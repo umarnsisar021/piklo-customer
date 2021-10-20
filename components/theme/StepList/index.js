@@ -9,7 +9,7 @@ export default function ThemeStepList(props) {
     return (
         <TouchableOpacity
             onPress={props.onPress ? props.onPress : null}
-            style={{...theme.row,...theme.my_15,...theme.w_100 ,...theme.align_center,...props.MainConatainerStyle }}>
+            style={{...theme.row,...theme.my_15,...theme.w_100 ,...theme.align_center,...props.MainContainerStyle }}>
             <LinearGradient
                 colors={['#E66A71', '#CB587F',]}
                 style={{

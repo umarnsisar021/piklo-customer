@@ -62,7 +62,7 @@ export default function ThemeDateTimePicker(props) {
         showMode('time');
     };
     return (
-        <View style={{ marginVertical: 7, width: '100%', borderColor: error ? theme.purple.color : '#E9E8E8', borderBottomWidth: 1, zIndex:100, ...props.MainConatainerStyle }} >
+        <View style={{ marginVertical: 7, width: '100%', borderColor: error ? theme.purple.color : '#E9E8E8', borderBottomWidth: 1, zIndex:100, ...props.MainContainerStyle }} >
             {props.Label ? <Animated.View style={{
                 opacity: 1
             }}>

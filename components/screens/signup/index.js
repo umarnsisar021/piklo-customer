@@ -1,17 +1,21 @@
 
 import * as React from 'react';
-import {ScrollView, ActivityIndicator, StyleSheet, Text, TouchableOpacity, View, Image,KeyboardAvoidingView , TextInput,ImageBackground , StatusBar,TouchableWithoutFeedback ,Keyboard,Dimensions} from 'react-native';
+import { ActivityIndicator, Text, TouchableOpacity, View, Dimensions} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon,Overlay } from 'react-native-elements';
 import { useForm, Controller,FormProvider } from "react-hook-form";
 import ThemeInput from '../../theme/form/Input'
 import ThemeCheckBox from '../../theme/form/CheckBox'
+import ThemeCountryDropdown from '../../theme/form/CountryDropdown'
 import ThemeButton from '../../theme/buttons'
 import theme from '../../theme/style.js'
 import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import { validate } from '../../util/fn'
 import useJwt from '../../util/util';
+import DeviceInfo from 'react-native-device-info';
+import CountryPicker, { getAllCountries, getCallingCode } from 'react-native-country-picker-modal';
+
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -29,20 +33,30 @@ function SignUp  (props){
     setVisible(!visible);
   };
   inputRef.current = {};
+  inputRef.current['first_name'] = React.createRef();
+  inputRef.current['last_name'] = React.createRef();
+  inputRef.current['country_code'] = React.createRef();
   inputRef.current['mobile_no'] = React.createRef();
   inputRef.current['email'] = React.createRef();
   inputRef.current['username'] = React.createRef();
   React.useEffect(()=>{
 
   },[])
-  const onSubmit = data => {
+  const onSubmit =async data => {
+
+      data["device_id"] = props.user.device_id;
+      data["mobile_no"] = data["country_code"] + data["mobile_no"] ;
       if(data.agree){
         if (validate(data.email, 'email') === false) {
           Toast.show('Please input correct email.', {})
         }
         else{
+          console.log()
+          // useJwt.post('customers/Authentication/signup',{
+          //   data
+          // }).then((res)=>{
 
-
+          // })
         }
       }
       else{
@@ -122,26 +136,79 @@ function SignUp  (props){
           <Text style={{...theme.f_32, ...theme.black, fontWeight:'bold'}}>Create Account</Text>
           <Text style={{...theme.f_18,...theme.gray}}>Let's get started</Text>
             <FormProvider {...formMethods}>
+              <View style={{ flexDirection:'row', width:'100%', justifyContent:'space-between'}}>
+                {/* Field */}
+                <ThemeInput
+                  MainContainerStyle={{ marginTop: 25, width: '47%'}}
+                  InputConatainerStyle={{  }}
+                  Label="First Name"
+                  TextInput={{
+                    placeholder: '',
+
+                    ref: (input) => inputRef.current['first_name'] = input
+                  }}
+                  name='first_name'
+                  defaultValue=""
+                  rules={{ required: true }}
+                  error={formErrors.first_name}
+                />
+                {/* Field */}
+                <ThemeInput
+                  MainContainerStyle={{ marginTop: 25, width: '47%' }}
+                  InputConatainerStyle={{ }}
+                  Label="Last Name"
+                  TextInput={{
+                    placeholder: '',
+
+                    ref: (input) => inputRef.current['last_name'] = input
+                  }}
+                  name='last_name'
+                  defaultValue=""
+                  rules={{ required: true }}
+                  error={formErrors.last_name}
+                />
+              </View>
+              {/*  */}
+              <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                {/* Field */}
+                <ThemeCountryDropdown
+                  MainContainerStyle={{ marginTop:0, width: '35%' }}
+                  Label="Country Code"
+                  TextInput={{
+                    placeholder: '',
+
+                    ref: (input) => inputRef.current['country_code'] = input
+                  }}
+                  name='country_code'
+                  defaultValue=""
+                  rules={{ required: true }}
+                  error={formErrors.country_code}
+                />
+                {/* Field */}
+                <ThemeInput
+                  MainContainerStyle={{ marginTop: 0 , width:"60%" }}
+                  InputConatainerStyle={{ ...theme.w_80 }}
+                  Label="Mobile"
+                  TextInput={{
+                    placeholder: '',
+                    textContentType: 'password',
+                    keyboardType: 'numeric',
+                    onEndEditing: () => {
+                      validateMobileNo(formMethods.getValues('mobile_no'));
+                    },
+                    ref: (input) => inputRef.current['number'] = input
+                  }}
+                  name='mobile_no'
+                  defaultValue=""
+                  rules={{ required: true }}
+                  error={formErrors.mobile_no}
+                />
+              </View>
+              {/*  */}
+
+
               <ThemeInput
-                MainConatainerStyle={{marginTop:25}}
-                InputConatainerStyle={{...theme.w_80}}
-                Label="Mobile"
-                TextInput={{
-                  placeholder:'',
-                  textContentType:'password',
-                  keyboardType:'numeric',
-                  onEndEditing: ()=> {
-                    validateMobileNo(formMethods.getValues('mobile_no'));
-                  },
-                  ref: (input) => inputRef.current['number'] = input
-                }}
-                name='mobile_no'
-                defaultValue=""
-                rules={{required:true}}
-                error={formErrors.mobile_no}
-              />
-              <ThemeInput
-                MainConatainerStyle={{marginTop:0}}
+                MainContainerStyle={{marginTop:0}}
                 InputConatainerStyle={{...theme.w_80}}
                 Label="Email"
                 TextInput={{
@@ -162,7 +229,7 @@ function SignUp  (props){
                 error={formErrors.email}
               />
               <ThemeInput
-                MainConatainerStyle={{marginTop:0}}
+                MainContainerStyle={{marginTop:0}}
                 InputConatainerStyle={{width:'85%'}}
                 Label="Username"
                 TextInput={{
@@ -179,7 +246,7 @@ function SignUp  (props){
                 error={formErrors.username}
               />
               <ThemeInput
-                MainConatainerStyle={{ marginTop: 0 }}
+                MainContainerStyle={{ marginTop: 0 }}
                 InputConatainerStyle={{ width: '85%' }}
                 Label="Password"
                 TextInput={{
@@ -207,10 +274,9 @@ function SignUp  (props){
           <View
             style={{
               ...theme.w_100,
-              ...theme.absolute,
-              ...theme.p_30,
+              ...theme.p_5,
               ...theme.align_center,
-              top: windowHeight - 120
+
               }}>
                 <View style={{
                     ...theme.row,

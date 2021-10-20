@@ -22,7 +22,7 @@ export default function ThemeSelect(props) {
         pickerRef.current.blur();
     }
     return (
-        <View style={{flexDirection:'row',marginVertical:7,width:'100%',height:55,borderBottomColor: props.error ? '#FFA253':'#E9E8E8',borderBottomWidth:1,borderRadius:5,...props.MainConatainerStyle}}>
+        <View style={{flexDirection:'row',marginVertical:7,width:'100%',height:55,borderBottomColor: props.error ? '#FFA253':'#E9E8E8',borderBottomWidth:1,borderRadius:5,...props.MainContainerStyle}}>
 
                 <View  style={{paddingVertical:15,paddingHorizontal:0,...props.InputConatainerStyle}}>
                     <Picker
@@ -38,7 +38,7 @@ export default function ThemeSelect(props) {
                             <Picker.Item key={index} label={item.label} value={item.value} />
                         )) : <Picker.Item label='' value='' /> }
                     </Picker>
-    
+
                 </View>
         </View>
     )

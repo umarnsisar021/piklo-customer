@@ -9,6 +9,7 @@ import DrawerContent from './DrawerContent';
 import ScreenWrapper from '../screens/ScreenWrapper';
 /// SCREENS
 import SplashScreen from '../screens/SplashScreen/index';
+import Prescreen from '../screens/Prescreen';
 import Auth from '../util/auth';
 import Login from '../screens/login';
 import Logout from '../screens/Logout';
@@ -18,13 +19,13 @@ import ForgotPassword from '../screens/login/forgotpassword';
 import VerifyMobile from '../screens/login/verifymobile';
 import ChangePassword from '../screens/login/changepassword';
 import ChangePasswordMessage from '../screens/login/changepasswordMessage';
-import DriverRegistration from '../screens/DriverRegistration';
-import Personalnformation from '../screens/DriverRegistration/Personalnformation';
-import IdentityAndDocuments from '../screens/DriverRegistration/IdentityAndDocuments';
-import VehicleInformation from '../screens/DriverRegistration/VehicleInformation';
-import BankInformation from '../screens/DriverRegistration/BankInformation';
-import Terms from '../screens/DriverRegistration/Terms';
-import RegistrationMessage from '../screens/DriverRegistration/RegistrationMessage';
+import Registration from '../screens/Registration';
+import Personalnformation from '../screens/Registration/Personalnformation';
+import IdentityAndDocuments from '../screens/Registration/IdentityAndDocuments';
+import VehicleInformation from '../screens/Registration/VehicleInformation';
+import BankInformation from '../screens/Registration/BankInformation';
+import Terms from '../screens/Registration/Terms';
+import RegistrationMessage from '../screens/Registration/RegistrationMessage';
 import JobInformation from '../screens/Job/JobInformation';
 import JobCompleted from '../screens/Job/JobCompleted';
 import OngoingJob from '../screens/Job/OngoingJob';
@@ -87,11 +88,13 @@ const Drawer = createDrawerNavigator();
 
 const HomeStack = (props)=>(
   <Stack.Navigator>
-    {/* <Stack.Screen options={{ headerShown: true, title: "Job Completed", ...HeaderTheme }} name="JobCompleted" >
-      {props => <ScreenWrapper {...props}><JobCompleted {...props} /></ScreenWrapper>}
-    </Stack.Screen> */}
+
     <Stack.Screen options={{headerShown: false}} name="Auth">
       {props => <ScreenWrapper {...props}><Auth {...props} /></ScreenWrapper>}
+    </Stack.Screen>
+    {/*  */}
+    <Stack.Screen options={{ headerShown: false}} name="Prescreen">
+      {props => <ScreenWrapper {...props}><Prescreen {...props} /></ScreenWrapper>}
     </Stack.Screen>
     {/*  */}
     <Stack.Screen options={{ headerShown: false, ...HeaderTheme}} name="Home">
@@ -102,8 +105,8 @@ const HomeStack = (props)=>(
       {props => <ScreenWrapper {...props}><Profile {...props} /></ScreenWrapper>}
     </Stack.Screen>
     {/*  */}
-    <Stack.Screen options={{ headerShown: false }} name="DriverRegistration" >
-      {props => <ScreenWrapper {...props}><DriverRegistration {...props} /></ScreenWrapper>}
+    <Stack.Screen options={{ headerShown: false }} name="Registration" >
+      {props => <ScreenWrapper {...props}><Registration {...props} /></ScreenWrapper>}
     </Stack.Screen>
     {/*  */}
     <Stack.Screen options={{headerShown: false}}  name="SignUp" >

@@ -4,18 +4,13 @@ import { CommonActions  } from '@react-navigation/native';
 import ScreenLoader from '../screens/component/ScreenLoader';
 
  function Auth (props){
-     
+
     const userConfig = useSelector(state => state.user);
     React.useEffect(()=>{
         setTimeout(() => {
             if (userConfig.isLogin === false) {
-                const resetAction = CommonActions.reset({
-                    index: 0,
-                    routes: [
-                        { name: 'Login' },
-                    ],
-                })
-                props.navigation.navigate('Login');
+
+                props.navigation.navigate('Prescreen');
 
 
             } else {

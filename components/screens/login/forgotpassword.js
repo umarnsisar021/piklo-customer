@@ -41,7 +41,7 @@ export default  function ForgotPassword (props){
           <Text style={{ ...theme.f_18, ...theme.gray }}>Enter associated email address</Text>
             <FormProvider {...formMethods}>
               <ThemeInput
-                MainConatainerStyle={{marginTop:25}}
+                MainContainerStyle={{marginTop:25}}
                 InputConatainerStyle={{width:'80%'}}
                 Icon={<Icon name='apps-outline' type='ionicon' color='#449284'  />}
                 TextInput={{
