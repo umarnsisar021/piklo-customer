@@ -5,7 +5,7 @@ import { cos, Value } from "react-native-reanimated";
 export default function OTPFiller(props) {
     let elem = [];
     const inputs = props.inputLength;
-    const inputRef = React.useRef([]);   
+    const inputRef = React.useRef([]);
     for (let i=0; i < inputs; i++){
         elem[i]= i;
     }
@@ -38,7 +38,7 @@ export default function OTPFiller(props) {
                     inputRef.current[key-1].focus();
                     inputRef.current[key-1].clear();
                     inputRef.current[key-1].value = '';
-                    
+
                 }
             }
         }
@@ -51,27 +51,27 @@ export default function OTPFiller(props) {
                     inputRef.current[key+1].focus();
                 }
             }
-            
+
         }
     }
 
     return(
         <View style={{width:'100%',flexDirection:"row",justifyContent:'space-evenly' ,...props.containerStyle}}>
            {elem.map((elem,key)=>(
-                <TextInput 
-                    caretHidden={true} 
-                    autoFocus={true}
-                    key={key} 
-                    ref={(element) => {inputRef.current[key] = element;}} maxLength={1} 
-                    style={{borderColor:'gray',borderBottomWidth:2,...props.inputStyle}} 
+                <TextInput
+                    caretHidden={true}
+                    autoFocus={ key == 0 ? true: false}
+                    key={key}
+                    ref={(element) => {inputRef.current[key] = element;}} maxLength={1}
+                    style={{borderColor:'gray',borderBottomWidth:2,...props.inputStyle}}
                     keyboardType = 'numeric'
-                    onChangeText={(value)=>{handleOnChnageText(value,key)}} 
+                    onChangeText={(value)=>{handleOnChnageText(value,key)}}
                     onKeyPress={({ nativeEvent }) => {handleOnKeyPress(nativeEvent,key)}}
-                    onFocus={ ()=>{ (handleOnFocus(key)) }}
+                    onFocus={()=>{ (handleOnFocus(key)) }}
                 />
            ))}
-           
-           
+
+
         </View>
     )
 }

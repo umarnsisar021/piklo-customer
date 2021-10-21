@@ -4,6 +4,7 @@ import { CheckBox as CheckBoxIOS}   from 'react-native-elements'
 import { View,Text ,Platform } from 'react-native';
 import { useFormContext,useController } from 'react-hook-form';
 import { Icon } from 'react-native-elements';
+import theme from '../../style';
 export default function ThemeCheckBox (props) {
     const [toggleCheckBox, setToggleCheckBox] = React.useState(false)
     const { name, rules, defaultValue} = props
@@ -50,6 +51,7 @@ export default function ThemeCheckBox (props) {
                             }
                         }}
                         {...props.CheckBoxProps}
+                        tintColors={{ true: theme.purple.color, false: 'black' }}
                     />
             }
 

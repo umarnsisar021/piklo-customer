@@ -3,6 +3,8 @@ import { StyleSheet, Text, View, Image, TextInput, Animated} from 'react-native'
 import { useFormContext,useController } from 'react-hook-form';
 import { Picker } from '@react-native-picker/picker';
 import CountryPicker, { getAllCountries, getCallingCode } from 'react-native-country-picker-modal';
+import theme from "../../style";
+
 export default function ThemeCountryDropdown(props) {
     const { name, rules, defaultValue} = props
     const formContext = useFormContext();
@@ -23,7 +25,7 @@ export default function ThemeCountryDropdown(props) {
         pickerRef.current.blur();
     }
     return (
-        <View style={{marginVertical:7,width:'100%',height:55,borderBottomColor: props.error ? '#FFA253':'#E9E8E8',borderBottomWidth:1,borderRadius:5,...props.MainContainerStyle}}>
+        <View style={{marginVertical:7,width:'100%',height:60,borderBottomColor: props.error ? theme.purple.color:'#E9E8E8',borderBottomWidth:1,borderRadius:5,...props.MainContainerStyle}}>
             {props.Label ? <Animated.View style={{
                 opacity: 1
             }}><Text style={{ ...props.IconStyle, color: '#a2a2a2' }}>{props.Label}</Text></Animated.View> : <></>}
@@ -36,7 +38,8 @@ export default function ThemeCountryDropdown(props) {
                         withFlagButton
                         withCallingCodeButton
                         countryCode={field.value}
-                        onSelect={(country => { field.onChange(country.cca2) })}
+                        onSelect={(country => { field.onChange(country.callingCode)} )}
+                        {...props.pickerProps}
                     />
 
                 </View>

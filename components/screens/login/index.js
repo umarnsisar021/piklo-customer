@@ -6,20 +6,22 @@ import { Icon } from 'react-native-elements';
 import { useForm,FormProvider } from "react-hook-form";
 import Constants from 'expo-constants';
 import Toast from 'react-native-root-toast';
-import useJwt from '../../util/util'
-import firebase from '../../firebase';
-// Theme Elements
-import ThemeInput from '../../theme/form/Input'
-import ThemeCheckBox from '../../theme/form/CheckBox'
-import theme from '../../theme/style.js'
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-import GradientButton from 'react-native-gradient-buttons';
-import ThemeButton from '../../theme/buttons';
 import { connect } from 'react-redux';
 import { ActivityIndicator } from 'react-native';
 import { Overlay } from 'react-native-elements/dist/overlay/Overlay';
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+import GradientButton from 'react-native-gradient-buttons';
+
+
+////// Theme Elements
+import useJwt from '../../util/util'
+import firebase from '../../firebase';
+import ThemeInput from '../../theme/form/Input'
+import ThemeCheckBox from '../../theme/form/CheckBox'
+import theme from '../../theme/style.js'
+import ThemeButton from '../../theme/buttons';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 // Initialize Firebase JS SDK
 // https://firebase.google.com/docs/web/setup
@@ -187,11 +189,7 @@ function Login (props){
 
   return(
 
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
-
-          <View>
-
-          </View>
+      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen}>
           {/* Sign In */}
           <View style={{padding:30}}>
           <Text
@@ -290,7 +288,6 @@ function Login (props){
             <FirebaseRecaptchaVerifierModal
               ref={recaptchaVerifier}
               firebaseConfig={firebaseConfig}
-
             />
           <Overlay isVisible={visible} >
               <ActivityIndicator size="large" color="#FFA253"  />

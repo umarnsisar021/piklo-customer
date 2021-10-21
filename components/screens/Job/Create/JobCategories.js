@@ -4,24 +4,23 @@ import { Text, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform }
 
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
-import { useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 // Theme Elements
-import theme from '../../theme/style'
-import ThemeAlertMessage from '../../theme/AlertMessage'
-import RecentActivitiesComponent from './RecentActivitiesComponent'
+import theme from '../../../theme/style'
+import ThemeAlertMessage from '../../../theme/AlertMessage'
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import useJwt from '../../util/util'
-import ScreenLoader from '../component/ScreenLoader';
-import Logo from '../../../assets/app/icon.png'
+import useJwt from '../../../util/util'
+import ScreenLoader from '../../component/ScreenLoader';
+import Logo from '../../../../assets/app/icon.png'
 
 
 const screenHeight = Dimensions.get('screen').height;
-function Home(props) {
+function JobCategories(props) {
     const navigation = useNavigation();
     const formMethods = useForm();
-    const [data,setData] = React.useState({
+    const [data, setData] = React.useState({
         total_delivers: 0,
         total_opportunities: 0,
         recent_jobs: [],
@@ -36,10 +35,10 @@ function Home(props) {
         //     }
         // })
     }
-    React.useEffect(()=>{
+    React.useEffect(() => {
         Run()
-    },[])
-    if(loaded){
+    }, [])
+    if (loaded) {
         return (
 
             <View id='Main-page' colors={['#FFFFFF', '#FFFFFF']} style={{}} >
@@ -52,17 +51,17 @@ function Home(props) {
                         alignItems: 'center',
                         backgroundColor: theme.purple.color,
                         borderBottomColor:
-                        theme.purple.color,
+                            theme.purple.color,
                         borderBottomWidth: 1,
                         marginTop: Platform.OS == "ios" ? 0 : 28,
                         paddingTop: Platform.OS == "ios" ? 28 : 0
                     }}>
-                    <TouchableOpacity style={{ width: "33.333%",alignItems:'flex-start' }} onPress={() => props.navigation.openDrawer()}>
+                    <TouchableOpacity style={{ width: "33.333%", alignItems: 'flex-start' }} onPress={() => props.navigation.openDrawer()}>
                         <Icon name="menu-outline" type="ionicon" size={40} color="white"></Icon>
                     </TouchableOpacity>
-                    <View style={{ width: "33.333%",flexDirection:'row',alignItems:'center' }}>
-                        <Image source={Logo} style={{ width: 35, height: 35,resizeMode:"contain"}} />
-                        <Text style={{ fontFamily: 'FredokaOne', fontSize: 20,color:'white' }}>Piklo</Text>
+                    <View style={{ width: "33.333%", flexDirection: 'row', alignItems: 'center' }}>
+                        <Image source={Logo} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                        <Text style={{ fontFamily: 'FredokaOne', fontSize: 20, color: 'white' }}>Piklo</Text>
                     </View>
                     <View style={{ width: "33.333%", flexDirection: 'row', alignItems: 'center' }}>
                         <Text></Text>
@@ -102,7 +101,7 @@ function Home(props) {
                                         color={theme.purple.color}
                                     />
                                     <View style={{ ...theme.absolute, right: 10, bottom: 10, ...theme.text_center }}>
-                                        <Text style={{ ...theme.text_right, ...theme.black, ...theme.f_28 , fontWeight:'600' }}>{data.total_delivers}</Text>
+                                        <Text style={{ ...theme.text_right, ...theme.black, ...theme.f_28, fontWeight: '600' }}>{data.total_delivers}</Text>
                                         <Text style={{ ...theme.purple, ...theme.f_14 }}>Delivered</Text>
                                     </View>
                                 </LinearGradient>
@@ -138,7 +137,7 @@ function Home(props) {
             </View>
         )
     }
-    else{
+    else {
         return <ScreenLoader />
     }
 
@@ -154,8 +153,8 @@ const mapDispatchToProps = (dispatch) => {
 }
 const mapStateToProps = (state) => {
     const { user } = state
-    return { user: user, userData: user.userDetails}
+    return { user: user, userData: user.userDetails }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(JobCategories)
 
 

@@ -4,6 +4,9 @@ import { ActivityIndicator, Text, TouchableOpacity, View, Dimensions} from 'reac
 import { LinearGradient } from 'expo-linear-gradient';
 import { Icon,Overlay } from 'react-native-elements';
 import { useForm, Controller,FormProvider } from "react-hook-form";
+import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
+
+////// Theme Elements
 import ThemeInput from '../../theme/form/Input'
 import ThemeCheckBox from '../../theme/form/CheckBox'
 import ThemeCountryDropdown from '../../theme/form/CountryDropdown'
@@ -13,10 +16,7 @@ import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import { validate } from '../../util/fn'
 import useJwt from '../../util/util';
-import DeviceInfo from 'react-native-device-info';
-import CountryPicker, { getAllCountries, getCallingCode } from 'react-native-country-picker-modal';
-
-
+import firebase from '../../firebase';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -28,6 +28,12 @@ function SignUp  (props){
   const [visible, setVisible] = React.useState(false);
   const [validatingMessageText, setValidatingMessageText] = React.useState('');
   const [passwordView, setPassworView] = React.useState(true);
+  /// Firebase Phone Auth States
+  const recaptchaVerifier = React.useRef(null);
+
+  const firebaseConfig = firebase.apps.length ? firebase.app().options : undefined;
+  ///
+
   let inputRef = React.useRef();
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -43,7 +49,6 @@ function SignUp  (props){
 
   },[])
   const onSubmit =async data => {
-
       data["device_id"] = props.user.device_id;
       data["mobile_no"] = data["country_code"] + data["mobile_no"] ;
       if(data.agree){
@@ -51,12 +56,23 @@ function SignUp  (props){
           Toast.show('Please input correct email.', {})
         }
         else{
-          console.log()
-          // useJwt.post('customers/Authentication/signup',{
-          //   data
-          // }).then((res)=>{
+          try {
+            const phoneProvider = new firebase.auth.PhoneAuthProvider();
+            const verificationId = await phoneProvider.verifyPhoneNumber(
+             `+${data["mobile_no"]}`,
+              recaptchaVerifier.current
+            );
 
-          // })
+            props.setSignUpBasic(data);
+            props.navigation.navigate('VerifyMobileSignUp', {
+              data: { verificationId: verificationId, formData: data }
+            })
+
+          } catch (error) {
+            console.log(error.message)
+          }
+
+
         }
       }
       else{
@@ -90,7 +106,6 @@ function SignUp  (props){
           setVisible(false)
         })
       }
-
     }
 
     const validateEmail =(value) =>{
@@ -140,7 +155,7 @@ function SignUp  (props){
                 {/* Field */}
                 <ThemeInput
                   MainContainerStyle={{ marginTop: 25, width: '47%'}}
-                  InputConatainerStyle={{  }}
+                  InputConatainerStyle={{width:'100%'}}
                   Label="First Name"
                   TextInput={{
                     placeholder: '',
@@ -148,14 +163,14 @@ function SignUp  (props){
                     ref: (input) => inputRef.current['first_name'] = input
                   }}
                   name='first_name'
-                  defaultValue=""
+                  defaultValue="Demo"
                   rules={{ required: true }}
                   error={formErrors.first_name}
                 />
                 {/* Field */}
                 <ThemeInput
                   MainContainerStyle={{ marginTop: 25, width: '47%' }}
-                  InputConatainerStyle={{ }}
+                  InputConatainerStyle={{ width: '100%' }}
                   Label="Last Name"
                   TextInput={{
                     placeholder: '',
@@ -163,7 +178,7 @@ function SignUp  (props){
                     ref: (input) => inputRef.current['last_name'] = input
                   }}
                   name='last_name'
-                  defaultValue=""
+                  defaultValue="Customer"
                   rules={{ required: true }}
                   error={formErrors.last_name}
                 />
@@ -172,7 +187,9 @@ function SignUp  (props){
               <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                 {/* Field */}
                 <ThemeCountryDropdown
+                  pickerProps={{ countryCode: 'PK', withFilter: true,}}
                   MainContainerStyle={{ marginTop:0, width: '35%' }}
+                  InputConatainerStyle={{ width: '100%' }}
                   Label="Country Code"
                   TextInput={{
                     placeholder: '',
@@ -187,19 +204,19 @@ function SignUp  (props){
                 {/* Field */}
                 <ThemeInput
                   MainContainerStyle={{ marginTop: 0 , width:"60%" }}
-                  InputConatainerStyle={{ ...theme.w_80 }}
+                  InputConatainerStyle={{ width: '100%' }}
                   Label="Mobile"
                   TextInput={{
                     placeholder: '',
                     textContentType: 'password',
                     keyboardType: 'numeric',
                     onEndEditing: () => {
-                      validateMobileNo(formMethods.getValues('mobile_no'));
+                      validateMobileNo(formMethods.getValues('country_code') + formMethods.getValues('mobile_no'));
                     },
                     ref: (input) => inputRef.current['number'] = input
                   }}
                   name='mobile_no'
-                  defaultValue=""
+                  defaultValue="3132500948"
                   rules={{ required: true }}
                   error={formErrors.mobile_no}
                 />
@@ -209,7 +226,7 @@ function SignUp  (props){
 
               <ThemeInput
                 MainContainerStyle={{marginTop:0}}
-                InputConatainerStyle={{...theme.w_80}}
+                InputConatainerStyle={{ width: '100%' }}
                 Label="Email"
                 TextInput={{
                   placeholder:'',
@@ -224,13 +241,13 @@ function SignUp  (props){
                   }
                 }}
                 name='email'
-                defaultValue=""
+                defaultValue="democustomer@gmail.com"
                 rules={{required:true}}
                 error={formErrors.email}
               />
               <ThemeInput
                 MainContainerStyle={{marginTop:0}}
-                InputConatainerStyle={{width:'85%'}}
+                InputConatainerStyle={{ width: '100%' }}
                 Label="Username"
                 TextInput={{
                   placeholder:'',
@@ -241,7 +258,7 @@ function SignUp  (props){
                   }
                 }}
                 name='username'
-                defaultValue=""
+                defaultValue="democustomer"
                 rules={{ required: true }}
                 error={formErrors.username}
               />
@@ -256,7 +273,7 @@ function SignUp  (props){
                 }}
                 IconRight={<Icon onPress={() => { setPassworView(!passwordView) }} name='eye-outline' type='ionicon' color='gray' />}
                 name='password'
-                defaultValue=""
+                defaultValue="123456"
                 rules={{ required: true }}
                 error={formErrors.password}
               />
@@ -266,6 +283,10 @@ function SignUp  (props){
 
             </FormProvider>
             <View >
+              <FirebaseRecaptchaVerifierModal
+                ref={recaptchaVerifier}
+                firebaseConfig={firebaseConfig}
+              />
               <ThemeButton text="CREATE" onPressAction={formMethods.handleSubmit(onSubmit)} />
             </View>
           </View>
@@ -310,11 +331,11 @@ function SignUp  (props){
 const mapDispatchToProps = (dispatch) => {
   return {
     // dispatching plain actions
-
+    setSignUpBasic: (data) => dispatch({ type: 'SET_SIGNUP_BASIC', payload: data }),
   }
 }
 const mapStateToProps = (state)=> {
-  const { signup } = state
-  return { signup: signup }
+  const { signup ,user } = state
+  return { signup: signup, user: user}
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SignUp)

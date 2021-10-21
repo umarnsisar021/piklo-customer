@@ -3,7 +3,7 @@ import { View, StyleSheet, Text} from 'react-native';
 import {connect, useSelector} from 'react-redux';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { DrawerContentScrollView, DrawerItemList,DrawerItem, createDrawerNavigator } from '@react-navigation/drawer';
+import {  createDrawerNavigator } from '@react-navigation/drawer';
 
 import DrawerContent from './DrawerContent';
 import ScreenWrapper from '../screens/ScreenWrapper';
@@ -17,6 +17,7 @@ import SignUp from '../screens/signup';
 import SignUpMessage from '../screens/signup/signupmessage';
 import ForgotPassword from '../screens/login/forgotpassword';
 import VerifyMobile from '../screens/login/verifymobile';
+import VerifyMobileSignUp from '../screens/signup/VerifyMobileSignUp';
 import ChangePassword from '../screens/login/changepassword';
 import ChangePasswordMessage from '../screens/login/changepasswordMessage';
 import Registration from '../screens/Registration';
@@ -27,6 +28,7 @@ import BankInformation from '../screens/Registration/BankInformation';
 import Terms from '../screens/Registration/Terms';
 import RegistrationMessage from '../screens/Registration/RegistrationMessage';
 import JobInformation from '../screens/Job/JobInformation';
+import JobCategories from '../screens/Job/Create/JobCategories';
 import JobCompleted from '../screens/Job/JobCompleted';
 import OngoingJob from '../screens/Job/OngoingJob';
 import OrderHistory from '../screens/OrderHistory';
@@ -117,9 +119,16 @@ const HomeStack = (props)=>(
       {props => <ScreenWrapper {...props}><VerifyMobile {...props} /></ScreenWrapper>}
     </Stack.Screen>
     {/*  */}
+    <Stack.Screen options={{ headerShown: false }} name="VerifyMobileSignUp"       >
+      {props => <ScreenWrapper {...props}><VerifyMobileSignUp {...props} /></ScreenWrapper>}
+    </Stack.Screen>
+    {/*  */}
 
 
     {/*  */}
+    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobCategories" >
+      {props => <ScreenWrapper {...props}><JobCategories {...props} /></ScreenWrapper>}
+    </Stack.Screen>
     <Stack.Screen options={{ headerShown: false ,title:"Job Information",...HeaderTheme}} name="JobInformation" >
       {props => <ScreenWrapper {...props}><JobInformation {...props} /></ScreenWrapper>}
     </Stack.Screen>

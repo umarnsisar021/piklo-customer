@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity,  ActivityIndicator} from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Icon, Switch, Overlay} from 'react-native-elements';
@@ -18,7 +18,8 @@ function HomeTabs(props) {
             <Tab.Screen options={{
                 headerShown: false,
                 tabBarButton: ({ focused }) => {
-                    return <TabComponents {...props}/>
+                    return <TabComponents {...props} />
+
                 },
                 tabBarShowLabel: false,
             }} style={{ width: '100%', backgroundColor: 'gray' }}
@@ -72,18 +73,21 @@ function TabComponents(props) {
             }
         })
     }
-    Run()
+    useEffect(()=>{
+        //Run()
+    },[])
+    //Run()
 
     return <View style={{ ...style.main }}>
         <View style={{ ...style.footer_container }}>
-            <View style={{ ...theme.row, ...theme.px_10, ...theme.align_center }}>
-                <ToggleSwitch size="medium" onColor={theme.purple.color} isOn={isEnabledIntracity} color="orange" onToggle={toggleSwitchIntracity} />
-                <Text style={{ ...theme.black, ...theme.ml_5 }}>Intercity</Text>
+            <View style={{ ...theme.row, ...theme.px_10, ...theme.align_center,width:'33.333%',justifyContent:'center' }}>
+                <Icon type="feather" name="user" color="gray" />
             </View>
             <View>
                 <TouchableOpacity
-                    onPress={() => props.navigation.navigate("Notifications")}
+                    onPress={() => props.navigation.navigate("JobCategories")}
                     style={{
+                        ...theme.row,
                         width: 60,
                         height: 60,
                         ...theme.bg_white,
@@ -95,12 +99,11 @@ function TabComponents(props) {
                         justifyContent: 'center'
                     }}
                 >
-                    <Icon type="ionicon" name="notifications-outline" color={theme.purple.color} size={28} />
+                    <Icon type="ionicon" solid={true} name="add-outline" color={theme.purple.color} size={40} />
                 </TouchableOpacity>
             </View>
-            <View style={{ ...theme.row, ...theme.px_15, ...theme.py_10, ...theme.align_center }}>
-                <ToggleSwitch size="medium" onColor={theme.purple.color} isOn={isEnabledActivity} onToggle={ toggleSwitchActivity} />
-                <Text style={{ ...theme.black, ...theme.ml_10 }}>Active</Text>
+            <View style={{ ...theme.row, ...theme.px_15, ...theme.py_10, ...theme.align_center, justifyContent: 'center', width: '33.333%' }}>
+                <Icon type="feather" name="dollar-sign" color="gray" />
             </View>
         </View>
         <Overlay isVisible={visible} >
@@ -116,7 +119,8 @@ const style = StyleSheet.create({
         ...theme.w_100,
         ...theme.hp_50,
         borderTopColor: "#f1f1f1",
-        borderTopWidth:1
+        borderTopLeftRadius: 25,
+        borderTopRightRadius: 25,
     },
     footer_container: {
         ...theme.row,
