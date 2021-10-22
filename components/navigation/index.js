@@ -37,6 +37,7 @@ import Profile from '../screens/Profile';
 /// Home Tabs
 import HomeTabs from './HomeTab'
 import OrderHistoryTab from './OrderHistoryTab'
+import JobCategoriesTab from './JobCategoriesTab'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 
@@ -127,7 +128,7 @@ const HomeStack = (props)=>(
 
     {/*  */}
     <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobCategories" >
-      {props => <ScreenWrapper {...props}><JobCategories {...props} /></ScreenWrapper>}
+      {props => <ScreenWrapper {...props}><JobCategoriesTab {...props} /></ScreenWrapper>}
     </Stack.Screen>
     <Stack.Screen options={{ headerShown: false ,title:"Job Information",...HeaderTheme}} name="JobInformation" >
       {props => <ScreenWrapper {...props}><JobInformation {...props} /></ScreenWrapper>}
