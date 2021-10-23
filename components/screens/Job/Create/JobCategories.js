@@ -172,10 +172,11 @@ const mapDispatchToProps = (dispatch) => {
         // dispatching plain actions
         setDeviceId: (data) => dispatch({ type: 'SET_DEVICE_ID', payload: data }),
         setJobCategories: (data) => dispatch({ type: 'SET_JOB_CATEGORIES', payload: data }),
+        setJobRequestFormData: (data) => dispatch({ type: 'SET_JOB_REQUEST_FORM_DATA', payload: data }),
     }
 }
 const mapStateToProps = (state) => {
-    const { user, appData } = state
-    return { user: user, userData: user.userDetails, appData: appData }
+    const { user, appData, jobRequestFormData} = state
+    return { user: user, userData: user.userDetails, appData: appData, jobRequestFormData: jobRequestFormData.jobRequestFormData }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(JobCategories)

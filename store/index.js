@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist'
 import AsyncStorage  from '@react-native-async-storage/async-storage'
 
 import thunk from 'redux-thunk';
-import cartItems, { currentLocation, userConfig, Handlechange, extra, ItemModal } from '../reducer/all';
+import cartItems, { currentLocation, userConfig, Handlechange, extra, ItemModal, jobRequestFormData } from '../reducer/all';
 import appData from '../reducer/appData';
 import signupReducer from '../reducer/signupReducer';
 import ongoingJobReducer from '../reducer/ongoingJobReducer';
@@ -24,6 +24,7 @@ const rootReducer = combineReducers({
     user:  persistReducer(persistConfig, userConfig),
     extraReducer:extra,
     itemModalReducer: ItemModal,
+    jobRequestFormData: jobRequestFormData,
 
 });
 

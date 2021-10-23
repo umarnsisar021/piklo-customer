@@ -138,4 +138,16 @@ export function ItemModal(state ={item_data:{}},action){
     return state;
 }
 
+
+const jobForm = {
+    jobRequestFormData: {}
+}
+
+export function jobRequestFormData  (state = jobForm, action) {
+    switch (action.type) {
+        case 'SET_JOB_REQUEST_FORM_DATA':
+            return { ...state, jobRequestFormData: action.payload }
+    }
+    return state;
+}
 export default cartItems;
