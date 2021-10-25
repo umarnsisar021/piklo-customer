@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 
 const  ScreenWrapper = (props) =>{
     React.useEffect(() => {
-       
+
     }, [])
 
     return ( props.children )

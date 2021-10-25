@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ActivityIndicator,StyleSheet } from 'reac
 import { Overlay } from 'react-native-elements';
 import theme from '../theme/style'
 import { connect } from 'react-redux';
+import Toast from 'react-native-root-toast';
 function JobCategoriesTabComponents(props) {
 
     const [visible, setOverlay] = React.useState(false);
@@ -17,7 +18,7 @@ function JobCategoriesTabComponents(props) {
 
     return <View style={{ ...style.main }}>
         <View style={{ ...style.footer_container }}>
-            <View style={{ width: '50%', justifyContent: 'center', paddingHorizontal: 15}}>
+            <View style={{ width: '50%', justifyContent: 'center', }}>
                 <TouchableOpacity
                     onPress={() => props.navigation.navigate("JobCategories")}
                     style={{
@@ -27,16 +28,23 @@ function JobCategoriesTabComponents(props) {
                         backgroundColor: '#E66A71',
                         ...theme.jc_center,
                         ...theme.align_center,
-                        ...theme.br_25
+                        // ...theme.br_25
 
                     }}
                 >
                     <Text style={{ ...theme.white }}>Schedule </Text>
                 </TouchableOpacity>
             </View>
-            <View style={{ width: '50%', paddingHorizontal:15}}>
+            <View style={{ width: '50%'}}>
                 <TouchableOpacity
-                    onPress={() => props.navigation.navigate("JobCategories")}
+                    onPress={() => {
+                        if (props.jobRequestFormData.category_id){
+                            props.navigation.navigate("JobCreatePickups")
+                        }else{
+                            Toast.show("Please select category!!!")
+                        }
+
+                    }}
                     style={{
                         ...theme.row,
                         width: '100%',
@@ -44,7 +52,7 @@ function JobCategoriesTabComponents(props) {
                         ...theme.bg_purple,
                         ...theme.jc_center,
                         ...theme.align_center,
-                        ...theme.br_25
+                        // ...theme.br_25
                     }}
                 >
                     <Text style={{ ...theme.white }} >Request Now</Text>

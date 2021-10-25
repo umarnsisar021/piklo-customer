@@ -13,7 +13,7 @@ import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
 
 const screenHeight = Dimensions.get('screen').height;
-function JobCategories(props) {
+function JobCreateForm(props) {
     const formMethods = useForm();
     const [buttonRef,setButtonRef] = React.useState({});
     const onSubmit = data => console.log(data);
@@ -22,39 +22,13 @@ function JobCategories(props) {
     // let { id } = props.route.params;
 
 
-    const CreateButtonRef = async ()=>{
-        let tempArray = {};
-        await Object.values(data).map((row, key) => {
-            tempArray[key] ={};
-            tempArray[key].checked = false;
-        });
-        await setButtonRef(tempArray);
-        if(Object.keys(data).length> 0) {
-            setLoaded(true)
-        }
 
-    }
-    const handleSelectCategory = async (c_key,id)=>{
-        let tempArray = {};
-        await Object.values(data).map((row, key) => {
-            if (c_key == key){
-                tempArray[key] = {};
-                tempArray[key].checked = true;
-                console.log({ ...props.jobRequestFormData, category_id: id })
-                props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id})
-            }
-            else{
-                tempArray[key] = {};
-                tempArray[key].checked = false;
-            }
-        });
-        await setButtonRef(tempArray);
-    }
+
 
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
-        CreateButtonRef();
+        setLoaded(true);
         const Run = async () => {
             useJwt.setToken(props.user.token);
             await useJwt.get("Common/categories").then(async (res) => {
@@ -76,7 +50,7 @@ function JobCategories(props) {
                 }
             })
         }
-        Run();
+        //Run();
 
     }, [])
     if (loaded) {
@@ -105,28 +79,7 @@ function JobCategories(props) {
                     </View>
                     <View style={{ ...theme.py_15 }}>
                         <View style={stylesGrid.sectionContainer}>
-                            {Object.values(data).map((row, key) => {
-                                return <TouchableOpacity
-                                            key={key}
-                                            style={stylesGrid.boxContainer}
-                                            onPress={() => { handleSelectCategory(key,row.id) }}>
 
-                                            <CheckBox
-                                                title=''
-                                                checkedIcon='check-circle'
-                                                uncheckedIcon='times'
-                                                checkedColor={theme.purple.color}
-                                                checked={buttonRef[key].checked ? true: false}
-                                                containerStyle={buttonRef[key].checked ? {position:'absolute',zIndex:100,top: '-10%',right:'-10%'} : { display: 'none' }}
-
-                                            >
-                                            </CheckBox>
-
-
-                                            <Image source={{uri:row.icon_path}} style={{width:'45%',height:'50%',resizeMode:'contain'}}></Image>
-                                            <Text style={{fontWeight:'600',width:'100%',alignSelf:'center',textAlign:'center'}}>{row.name}</Text>
-                                </TouchableOpacity>
-                            })}
                         </View>
                     </View>
                 </ScrollView>
@@ -182,4 +135,4 @@ const mapStateToProps = (state) => {
     const { user, appData, jobRequestFormData} = state
     return { user: user, userData: user.userDetails, appData: appData, jobRequestFormData: jobRequestFormData.jobRequestFormData }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(JobCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(JobCreateForm)

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Piklo Driver",
+    "name": "Piklo",
     "slug": "App",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,7 +12,7 @@
     },
     "facebookAppId" : "4629323113765111",
 
-    "facebookDisplayName" : "Piklo Driver",
+    "facebookDisplayName" : "Piklo",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -41,7 +41,7 @@
       },
       "googleServicesFile": "./GoogleService-Info.plist",
       "supportsTablet": true,
-      "bundleIdentifier": "com.piklo.driver",
+      "bundleIdentifier": "com.piklo.customer",
       "buildNumber": "1.0.0",
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false,
@@ -57,7 +57,7 @@
       }
     },
     "android": {
-      "package": "com.piklo.driver",
+      "package": "com.piklo.customer",
       "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {

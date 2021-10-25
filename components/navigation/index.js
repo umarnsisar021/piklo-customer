@@ -28,12 +28,12 @@ import BankInformation from '../screens/Registration/BankInformation';
 import Terms from '../screens/Registration/Terms';
 import RegistrationMessage from '../screens/Registration/RegistrationMessage';
 import JobInformation from '../screens/Job/JobInformation';
-import JobCategories from '../screens/Job/Create/JobCategories';
 import JobCompleted from '../screens/Job/JobCompleted';
 import OngoingJob from '../screens/Job/OngoingJob';
 import OrderHistory from '../screens/OrderHistory';
 import Notifications from '../screens/Notifications';
 import Profile from '../screens/Profile';
+import JobCreatePickups from '../screens/Job/Create/JobCreatePickups';
 /// Home Tabs
 import HomeTabs from './HomeTab'
 import OrderHistoryTab from './OrderHistoryTab'
@@ -198,7 +198,10 @@ const HomeStack = (props)=>(
     <Stack.Screen options={{ headerShown: false,...HeaderTheme }} name="Notifications" >
       {props => <ScreenWrapper {...props}><Notifications {...props} /></ScreenWrapper>}
     </Stack.Screen>
-
+    {/* Create Job Screens */}
+    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobCreatePickups" >
+      {props => <ScreenWrapper {...props}><JobCreatePickups {...props} /></ScreenWrapper>}
+    </Stack.Screen>
   </Stack.Navigator>
   );
 

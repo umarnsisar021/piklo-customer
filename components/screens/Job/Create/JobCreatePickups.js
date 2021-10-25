@@ -11,50 +11,20 @@ import theme from '../../../theme/style'
 import notification from '../../../../assets/app/notification.png'
 import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
-
+import ThemeButton from '../../../theme/buttons';
+const minHeight = Dimensions.get('window').height;
 const screenHeight = Dimensions.get('screen').height;
-function JobCategories(props) {
+function JobCreatePickups(props) {
     const formMethods = useForm();
     const [buttonRef,setButtonRef] = React.useState({});
     const onSubmit = data => console.log(data);
     const [data, setData] = React.useState(props.appData.jobCategories);
+    const [pickups, setPickups] = React.useState({});
     const [loaded, setLoaded] = React.useState(false);
-    // let { id } = props.route.params;
-
-
-    const CreateButtonRef = async ()=>{
-        let tempArray = {};
-        await Object.values(data).map((row, key) => {
-            tempArray[key] ={};
-            tempArray[key].checked = false;
-        });
-        await setButtonRef(tempArray);
-        if(Object.keys(data).length> 0) {
-            setLoaded(true)
-        }
-
-    }
-    const handleSelectCategory = async (c_key,id)=>{
-        let tempArray = {};
-        await Object.values(data).map((row, key) => {
-            if (c_key == key){
-                tempArray[key] = {};
-                tempArray[key].checked = true;
-                console.log({ ...props.jobRequestFormData, category_id: id })
-                props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id})
-            }
-            else{
-                tempArray[key] = {};
-                tempArray[key].checked = false;
-            }
-        });
-        await setButtonRef(tempArray);
-    }
-
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
-        CreateButtonRef();
+        setLoaded(true);
         const Run = async () => {
             useJwt.setToken(props.user.token);
             await useJwt.get("Common/categories").then(async (res) => {
@@ -76,14 +46,14 @@ function JobCategories(props) {
                 }
             })
         }
-        Run();
+        //Run();
 
     }, [])
     if (loaded) {
 
         return (
 
-            <View id='Main-page' style={{ ...theme.main_screen, height: '100%' }} >
+            <View id='Main-page' style={{ ...theme.main_screen, height: 'auto', minHeight: minHeight}} >
                 <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 30, paddingBottom: 0, marginTop: 20 }}>
                     <StatusBar backgroundColor="transparent" />
                     {/* Back Button */}
@@ -99,37 +69,25 @@ function JobCategories(props) {
                     >
                         <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
                     </TouchableOpacity>
-                    <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Pickup Categories</Text>
+                    <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Pickups {screenHeight}  x {minHeight}</Text>
                     <View>
-                        <Text style={{ ...theme.f_16 }}>Choose a category</Text>
+
+                        {/* <Text style={{ ...theme.f_16 }}>Choose a category</Text> */}
                     </View>
                     <View style={{ ...theme.py_15 }}>
-                        <View style={stylesGrid.sectionContainer}>
-                            {Object.values(data).map((row, key) => {
-                                return <TouchableOpacity
-                                            key={key}
-                                            style={stylesGrid.boxContainer}
-                                            onPress={() => { handleSelectCategory(key,row.id) }}>
-
-                                            <CheckBox
-                                                title=''
-                                                checkedIcon='check-circle'
-                                                uncheckedIcon='times'
-                                                checkedColor={theme.purple.color}
-                                                checked={buttonRef[key].checked ? true: false}
-                                                containerStyle={buttonRef[key].checked ? {position:'absolute',zIndex:100,top: '-10%',right:'-10%'} : { display: 'none' }}
-
-                                            >
-                                            </CheckBox>
-
-
-                                            <Image source={{uri:row.icon_path}} style={{width:'45%',height:'50%',resizeMode:'contain'}}></Image>
-                                            <Text style={{fontWeight:'600',width:'100%',alignSelf:'center',textAlign:'center'}}>{row.name}</Text>
-                                </TouchableOpacity>
-                            })}
-                        </View>
+                        <PickUpComponent></PickUpComponent>
                     </View>
+
                 </ScrollView>
+                <View style={{ ...theme.py_20 , position:'relative' }}>
+                    <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20,flexDirection:'row',justifyContent:'center'}}>
+                        <ThemeButton
+                            onPressAction={() => {
+                                //props.navigation.navigate('Login')
+                            }}
+                            style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
+                    </View>
+                </View>
             </View>
         )
     }
@@ -170,6 +128,21 @@ const stylesGrid = StyleSheet.create({
 
     },
 });
+
+const PickUpComponent = ()=>{
+    const [pickups, setPickups] = React.useState({});
+
+    if (Object.values(pickups).length > 0) {
+        return <></>
+    }
+    else{
+        return <View>
+                <Text>No Pickups</Text>
+            </View>
+    }
+
+}
+
 const mapDispatchToProps = (dispatch) => {
     return {
         // dispatching plain actions
@@ -182,4 +155,4 @@ const mapStateToProps = (state) => {
     const { user, appData, jobRequestFormData} = state
     return { user: user, userData: user.userDetails, appData: appData, jobRequestFormData: jobRequestFormData.jobRequestFormData }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(JobCategories)
+export default connect(mapStateToProps, mapDispatchToProps)(JobCreatePickups)

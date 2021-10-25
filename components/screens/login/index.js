@@ -50,7 +50,7 @@ function Login (props){
         data["device_id"] = props.user.device_id;
         await useJwt.setRefreshCookies();
         await useJwt.storeData(null)
-        await useJwt.post('drivers/Authentication/login',data).then(async (res)=>{
+      await useJwt.post('customers/Authentication/login',data).then(async (res)=>{
 
           if (res.status) {
             if(res.headers['set-cookie']){
@@ -61,12 +61,13 @@ function Login (props){
             props.setToken(res.data.data.token)
             await useJwt.post('drivers/settings/get_my_profile',data).then(async (res1)=>{
               props.setUserProfile(res1.data.data)
+              console.log(res1.data.data)
               setVisible(false);
               try {
 
                   const phoneProvider = new firebase.auth.PhoneAuthProvider();
                   const verificationId = await phoneProvider.verifyPhoneNumber(
-                    res1.data.data.mobile_no,
+                    `+${res1.data.data.mobile_no}`,
                     recaptchaVerifier.current
                   );
                   setVerificationId(verificationId);
@@ -83,7 +84,8 @@ function Login (props){
           }
         }).catch( (error)=>{
           setVisible(false);
-          let toast = Toast.show(  error.response.data.message, {
+          console.log(error.response.data)
+          let toast = Toast.show( error.response.data.message, {
             duration: Toast.durations.LONG,
             position: Toast.positions.BOTTOM,
             shadow: true,

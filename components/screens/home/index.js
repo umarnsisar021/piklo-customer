@@ -7,8 +7,7 @@ import { Icon } from 'react-native-elements';
 import { useForm} from "react-hook-form";
 // Theme Elements
 import theme from '../../theme/style'
-import ThemeAlertMessage from '../../theme/AlertMessage'
-import RecentActivitiesComponent from './RecentActivitiesComponent'
+
 import { connect } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
