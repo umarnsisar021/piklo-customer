@@ -45,6 +45,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-elevated-view": "^0.0.6",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-google-places-autocomplete": "^2.4.1",
     "react-native-gradient-buttons": "^2.0.2",
     "react-native-inline-edit": "^0.4.0",
     "react-native-maps": "0.28.0",

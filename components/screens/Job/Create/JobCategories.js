@@ -84,25 +84,29 @@ function JobCategories(props) {
         return (
 
             <View id='Main-page' style={{ ...theme.main_screen, height: '100%' }} >
-                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 30, paddingBottom: 0, marginTop: 20 }}>
-                    <StatusBar backgroundColor="transparent" />
-                    {/* Back Button */}
+                <View style={{ ...theme.px_0, ...theme.mt_20,...theme.row}}>
                     <TouchableOpacity
                         onPress={() => {
                             props.navigation.goBack()
                         }}
                         style={{
                             ...theme.py_10,
+                            ...theme.px_10,
                             justifyContent: 'flex-start',
                             alignSelf: 'flex-start'
-                        }}
-                    >
+                        }}>
                         <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
                     </TouchableOpacity>
-                    <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Pickup Categories</Text>
+
                     <View>
+                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font,...theme.mt_10}}>Pickup Categories</Text>
                         <Text style={{ ...theme.f_16 }}>Choose a category</Text>
                     </View>
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_20, marginBottom: 0, paddingBottom: 0, marginTop: 5 }}>
+                    <StatusBar backgroundColor="transparent" />
+                    {/* Back Button */}
+
                     <View style={{ ...theme.py_15 }}>
                         <View style={stylesGrid.sectionContainer}>
                             {Object.values(data).map((row, key) => {

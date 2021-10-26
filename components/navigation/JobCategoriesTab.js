@@ -26,7 +26,7 @@ function JobCategoriesTab(props) {
 
 const style = StyleSheet.create({
     main: {
-        ...theme.hp_60,
+        ...theme.hp_50,
         backgroundColor:'#ffffff'
     },
 

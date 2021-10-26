@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform, StyleSheet } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Icon, CheckBox } from 'react-native-elements';
@@ -12,8 +12,11 @@ import notification from '../../../../assets/app/notification.png'
 import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
 import ThemeButton from '../../../theme/buttons';
-const minHeight = Dimensions.get('window').height;
+import LocationModal from './LocationModal';
+
+const minHeight = Platform.OS == "ios" ? (Dimensions.get('window').height - 30) : (Dimensions.get('window').height);
 const screenHeight = Dimensions.get('screen').height;
+
 function JobCreatePickups(props) {
     const formMethods = useForm();
     const [buttonRef,setButtonRef] = React.useState({});
@@ -21,6 +24,13 @@ function JobCreatePickups(props) {
     const [data, setData] = React.useState(props.appData.jobCategories);
     const [pickups, setPickups] = React.useState({});
     const [loaded, setLoaded] = React.useState(false);
+    const [showModal, setShowModal] = React.useState(false);
+    const handleShowModal =()=>{
+        setShowModal(true)
+    }
+    const handleHideModal = () => {
+        setShowModal(false)
+    }
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
@@ -48,36 +58,39 @@ function JobCreatePickups(props) {
         }
         //Run();
 
-    }, [])
+        console.log(showModal)
+    }, [showModal])
     if (loaded) {
 
         return (
 
             <View id='Main-page' style={{ ...theme.main_screen, height: 'auto', minHeight: minHeight}} >
-                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 30, paddingBottom: 0, marginTop: 20 }}>
-                    <StatusBar backgroundColor="transparent" />
-                    {/* Back Button */}
+                <View style={{ ...theme.px_0, ...theme.mt_20, ...theme.row }}>
                     <TouchableOpacity
                         onPress={() => {
                             props.navigation.goBack()
                         }}
                         style={{
                             ...theme.py_10,
+                            ...theme.px_10,
                             justifyContent: 'flex-start',
                             alignSelf: 'flex-start'
-                        }}
-                    >
+                        }}>
                         <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
                     </TouchableOpacity>
-                    <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Pickups {screenHeight}  x {minHeight}</Text>
-                    <View>
-
-                        {/* <Text style={{ ...theme.f_16 }}>Choose a category</Text> */}
+                    <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.align_center,width:'80%'}}>
+                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Picks & Drops</Text>
+                        <TouchableOpacity style={{ alignSelf: 'center' }} onPress={() => { handleShowModal()}}>
+                            <Icon type="ionicon" size={28} name="add-circle-outline" />
+                        </TouchableOpacity>
                     </View>
+                </View>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 30, paddingBottom: 0, marginTop: 20 }}>
+                    <StatusBar backgroundColor="transparent" />
+
                     <View style={{ ...theme.py_15 }}>
                         <PickUpComponent></PickUpComponent>
                     </View>
-
                 </ScrollView>
                 <View style={{ ...theme.py_20 , position:'relative' }}>
                     <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20,flexDirection:'row',justifyContent:'center'}}>
@@ -88,6 +101,7 @@ function JobCreatePickups(props) {
                             style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
                     </View>
                 </View>
+                <LocationModal show={showModal} onClose={handleHideModal}  />
             </View>
         )
     }
@@ -97,37 +111,7 @@ function JobCreatePickups(props) {
 }
 
 
-const rows = 5;
-const cols = 2;
-const marginHorizontal = 4;
-const marginVertical = 4;
-const rect = (Dimensions.get('window').width / cols) - (marginHorizontal * (cols + 1))-30;
-const stylesGrid = StyleSheet.create({
-    scrollContainer: {
 
-    },
-    sectionContainer: {
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        alignItems: 'flex-start',
-        justifyContent:'space-between'
-    },
-    boxContainer: {
-        marginTop: 10,
-        marginBottom: marginVertical,
-        marginLeft: marginHorizontal,
-        marginRight: marginHorizontal,
-        width: rect,
-        height: rect,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'transparent',
-        borderRadius:15,
-        borderWidth:1,
-        borderColor:theme.purple.color,
-
-    },
-});
 
 const PickUpComponent = ()=>{
     const [pickups, setPickups] = React.useState({});
@@ -136,12 +120,15 @@ const PickUpComponent = ()=>{
         return <></>
     }
     else{
-        return <View>
+        return <View style={{...theme.align_center,...theme.jc_space_between}}>
                 <Text>No Pickups</Text>
             </View>
     }
 
 }
+
+
+
 
 const mapDispatchToProps = (dispatch) => {
     return {
