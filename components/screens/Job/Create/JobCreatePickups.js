@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Icon, CheckBox } from 'react-native-elements';
@@ -22,7 +22,7 @@ function JobCreatePickups(props) {
     const [buttonRef,setButtonRef] = React.useState({});
     const onSubmit = data => console.log(data);
     const [data, setData] = React.useState(props.appData.jobCategories);
-    const [pickups, setPickups] = React.useState({});
+    const [locations, setLocations] = React.useState([]);
     const [loaded, setLoaded] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
     const handleShowModal =()=>{
@@ -31,6 +31,16 @@ function JobCreatePickups(props) {
     const handleHideModal = () => {
         setShowModal(false)
     }
+    ///
+    /// To store location in locations state
+    /// Data return from location modal
+    const handleAddLocation = (data) => {
+        let a = locations;
+        a.push(data);
+        setLocations(a)
+        handleHideModal(false)
+    }
+
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
@@ -57,8 +67,6 @@ function JobCreatePickups(props) {
             })
         }
         //Run();
-
-        console.log(showModal)
     }, [showModal])
     if (loaded) {
 
@@ -89,7 +97,7 @@ function JobCreatePickups(props) {
                     <StatusBar backgroundColor="transparent" />
 
                     <View style={{ ...theme.py_15 }}>
-                        <PickUpComponent></PickUpComponent>
+                        <LocationListComponent data={locations} />
                     </View>
                 </ScrollView>
                 <View style={{ ...theme.py_20 , position:'relative' }}>
@@ -101,7 +109,7 @@ function JobCreatePickups(props) {
                             style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
                     </View>
                 </View>
-                <LocationModal show={showModal} onClose={handleHideModal}  />
+                <LocationModal show={showModal} onClose={handleHideModal} locations={locations} onSubmit={handleAddLocation} />
             </View>
         )
     }
@@ -112,12 +120,36 @@ function JobCreatePickups(props) {
 
 
 
+const Item = ({ item, onPress, backgroundColor, textColor }) => (
+    <TouchableOpacity>
+        <Text style={[styles.title, textColor]}></Text>
+    </TouchableOpacity>
+);
 
-const PickUpComponent = ()=>{
+const LocationListComponent = (props)=>{
     const [pickups, setPickups] = React.useState({});
+    const renderItem = ({ item }) => {
 
-    if (Object.values(pickups).length > 0) {
-        return <></>
+
+        return (
+            <Item
+                item={item}
+                backgroundColor={{ backgroundColor }}
+                textColor={{ color }}
+            />
+        );
+    };
+    if (Object.values(props.data).length > 0) {
+        return <SafeAreaView>
+            <FlatList
+                data={props.data}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                extraData={selectedId}
+            >
+
+            </FlatList>
+        </SafeAreaView>
     }
     else{
         return <View style={{...theme.align_center,...theme.jc_space_between}}>
