@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { LogBox, StyleSheet, Text, View } from 'react-native';
 import {Provider,useDispatch,useSelector} from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import configureStore from './store';
@@ -15,7 +15,12 @@ import { StatusBar } from 'expo-status-bar';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
-
+LogBox.ignoreLogs([
+  'ReactNativeFiberHostComponent: Calling getNode() on the ref of an Animated component is no longer necessary. You can now directly use the ref instead. This method will be removed in a future release.',
+]);
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews with the same orientation - use another VirtualizedList-backed container instead', // TODO: Remove when fixed
+])
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
       shouldShowAlert: true,
@@ -103,6 +108,7 @@ export default function App() {
 
   },[])
   loadFonts();
+
   if (loaded) {
     return (
       <Provider store={store} >

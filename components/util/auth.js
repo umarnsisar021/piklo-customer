@@ -8,6 +8,7 @@ import ScreenLoader from '../screens/component/ScreenLoader';
     const userConfig = useSelector(state => state.user);
     React.useEffect(()=>{
         setTimeout(() => {
+            console.log(userConfig.isLogin )
             if (userConfig.isLogin === false) {
 
                 props.navigation.navigate('Prescreen');

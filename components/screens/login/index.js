@@ -61,7 +61,6 @@ function Login (props){
             props.setToken(res.data.data.token)
             await useJwt.post('drivers/settings/get_my_profile',data).then(async (res1)=>{
               props.setUserProfile(res1.data.data)
-              console.log(res1.data.data)
               setVisible(false);
               try {
 
@@ -292,7 +291,7 @@ function Login (props){
               firebaseConfig={firebaseConfig}
             />
           <Overlay isVisible={visible} >
-              <ActivityIndicator size="large" color="#FFA253"  />
+              <ActivityIndicator size="large" color={theme.purple.color}  />
               <Text>Submitting your request.</Text>
           </Overlay>
         </LinearGradient>

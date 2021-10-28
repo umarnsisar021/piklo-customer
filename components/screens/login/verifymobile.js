@@ -104,7 +104,7 @@ function VerifyMobile (props){
                 </View>
           </View>
         <Overlay isVisible={visible} >
-          <ActivityIndicator size="large" color="#FFA253" />
+          <ActivityIndicator size="large" color={theme.purple.color} />
           <Text>Verifying...</Text>
         </Overlay>
         </LinearGradient>

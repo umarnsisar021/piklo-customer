@@ -103,8 +103,9 @@ const LocationModal = (props) => {
     // Check the selected locations have pickups ,
     // If don`t then disable the dropoff radio
     const _havePickup = async () =>{
+
         if(Object.keys(props.locations).length>0){
-          let havePickup = false;
+            let havePickup = false;
             await Object.values(props.locations).map((row)=>{
                if (row.location_type == 1){
                     havePickup = true;
@@ -113,6 +114,7 @@ const LocationModal = (props) => {
             if (havePickup){
                 // if selected locations have  have pickups
                 setDropDisable(false)
+
             }
             else{
                 // if selected locations have doesn`t have pickups
@@ -125,7 +127,7 @@ const LocationModal = (props) => {
     React.useEffect(()=>{
         _getLocationAsync();
         _havePickup()
-    },[])
+    },[dropDisable])
 
     if (position){
         return  <Modal
@@ -139,9 +141,9 @@ const LocationModal = (props) => {
                         onPress={()=>{
                             props.onClose()
                         }}
-                        style={{position: 'absolute',right:0,zIndex:100,top: -5,}}
+                        style={{position: 'absolute',right:0,zIndex:100,top: 0,}}
                     >
-                        <Icon reverse size={20} color={theme.purple.color} type="ionicon" name="close-outline" />
+                        <Icon reverse size={15} color={theme.purple.color} type="ionicon" name="close-outline" />
                     </TouchableOpacity>
                     <View style={{flexDirection:'row',...theme.mx_15,backgroundColor:'transparent'}}>
                         <GooglePlacesAutocomplete

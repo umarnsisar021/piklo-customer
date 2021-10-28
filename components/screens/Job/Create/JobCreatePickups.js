@@ -1,10 +1,11 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView, Image } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Icon, CheckBox } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
+import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 
 // Theme Elements
 import theme from '../../../theme/style'
@@ -13,6 +14,9 @@ import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
 import ThemeButton from '../../../theme/buttons';
 import LocationModal from './LocationModal';
+import pickupIcon from '../../../../assets/app/pickup.png'
+import dropoffIcon from '../../../../assets/app/dropoff.png'
+
 
 const minHeight = Platform.OS == "ios" ? (Dimensions.get('window').height - 30) : (Dimensions.get('window').height);
 const screenHeight = Dimensions.get('screen').height;
@@ -35,6 +39,7 @@ function JobCreatePickups(props) {
     /// To store location in locations state
     /// Data return from location modal
     const handleAddLocation = (data) => {
+        data['key'] = Object.keys(locations).length
         let a = locations;
         a.push(data);
         setLocations(a)
@@ -72,7 +77,7 @@ function JobCreatePickups(props) {
 
         return (
 
-            <View id='Main-page' style={{ ...theme.main_screen, height: 'auto', minHeight: minHeight}} >
+            <SafeAreaView  id='Main-page' style={{ ...theme.main_screen, height: 'auto', minHeight: minHeight}} >
                 <View style={{ ...theme.px_0, ...theme.mt_20, ...theme.row }}>
                     <TouchableOpacity
                         onPress={() => {
@@ -97,7 +102,7 @@ function JobCreatePickups(props) {
                     <StatusBar backgroundColor="transparent" />
 
                     <View style={{ ...theme.py_15 }}>
-                        <LocationListComponent data={locations} />
+                        <LocationListComponent data={locations} setData={setLocations} />
                     </View>
                 </ScrollView>
                 <View style={{ ...theme.py_20 , position:'relative' }}>
@@ -110,7 +115,7 @@ function JobCreatePickups(props) {
                     </View>
                 </View>
                 <LocationModal show={showModal} onClose={handleHideModal} locations={locations} onSubmit={handleAddLocation} />
-            </View>
+            </SafeAreaView >
         )
     }
     else {
@@ -120,35 +125,80 @@ function JobCreatePickups(props) {
 
 
 
-const Item = ({ item, onPress, backgroundColor, textColor }) => (
-    <TouchableOpacity>
-        <Text style={[styles.title, textColor]}></Text>
-    </TouchableOpacity>
-);
-
 const LocationListComponent = (props)=>{
-    const [pickups, setPickups] = React.useState({});
-    const renderItem = ({ item }) => {
 
+    const [selected, setSelected] = React.useState(null);
+    let DataLength = Object.keys(props.data).length;
 
-        return (
-            <Item
-                item={item}
-                backgroundColor={{ backgroundColor }}
-                textColor={{ color }}
-            />
-        );
+    const ConnectBottomLine = ({index,length}) =>{
+
+        if (index == (length-1)){
+            return null
+        }
+        else{
+           return <View style={{ position: 'absolute', width: 3, height: '50%', backgroundColor: theme.purple.color, zIndex: 100, top: '50%', left: -0 }}>
+                    </View>
+       }
+    }
+
+    React.useEffect(()=>{
+
+    }, [props.data]);
+    const renderItem = ({ item, index, drag, isActive }) => {
+
+        return <TouchableOpacity
+                    onLongPress={drag}
+                    onPress={() => setSelected(item.latitude)}
+                    disabled={isActive}
+                    style={{paddingLeft:20}}
+                >
+                    <View style={{position:'absolute', width:3, height:'50%',backgroundColor:theme.purple.color,zIndex:100,top: index  === 0 ? '50%':'0%',left:-0}}>
+                        <View style={{ backgroundColor: theme.purple.color, width: 20, height: 3, top: index === 0 ? '0%' : '98%',borderRadius:50}}>
+
+                        </View>
+                        {/* Bullet */}
+                        <View style={{ backgroundColor: theme.purple.color, width: 12, height: 12, top: index === 0 ? -8 : "84%", borderRadius: 50, left:15}}>
+
+                        </View>
+                    </View>
+
+                    <View style={styles.locationItemRow}>
+
+                        <View style={{...styles.ItemDetailContainer}}>
+                            <View>
+
+                                <Text style={{ ...styles.itemAddress }}>{item.address} {index}</Text>
+                            </View>
+                            <View>
+                                {
+                                 item.note != "" ? <Text style={{ ...styles.itemNote }}>Notes: {item.note}</Text> : <></>
+                                }
+                            </View>
+
+                            <View style={{...theme.row , ...theme.jc_space_between}}>
+                                <View></View>
+                                <View></View>
+                            </View>
+                        </View>
+                        <View style={{display: selected === item.latitude ? 'flex' :'none'}}>
+                            <Image source={item.location_type == '1' ? pickupIcon : dropoffIcon} style={styles.ItemTypeImage} />
+                        </View>
+                    </View>
+                </TouchableOpacity>
+
+        ;
     };
     if (Object.values(props.data).length > 0) {
         return <SafeAreaView>
-            <FlatList
-                data={props.data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-                extraData={selectedId}
-            >
-
-            </FlatList>
+                    <DraggableFlatList
+                        scrollEnabled={false}
+                        LisHeaderComponent={<></>}
+                        ListFooterComponent={<></>}
+                        data={props.data}
+                        onDragEnd={({ data }) => props.setData(data)}
+                        keyExtractor={(item) => item.key.toString()}
+                        renderItem={renderItem}
+                    />
         </SafeAreaView>
     }
     else{
@@ -159,7 +209,37 @@ const LocationListComponent = (props)=>{
 
 }
 
-
+const styles  = StyleSheet.create({
+    locationItemRow : {
+        backgroundColor: 'white',
+        borderColor: 'lightgray',
+        ...theme.row,
+        ...theme.py_15,
+        ...theme.px_15,
+        borderWidth: 1,
+        ...theme.br_10,
+        ...theme.my_5
+    },
+    ItemTypeImage:{
+        width: 20,
+        height: 40,
+        resizeMode:'contain',
+        marginRight:10,
+    },
+    ItemDetailContainer: {
+        flexGrow: 1,
+        ...theme.px_10
+    },
+    itemNote:{
+        fontSize:13,
+        ...theme.gray,
+        fontWeight:'700'
+    },
+    itemAddress:{
+        fontSize:13,
+        ...theme.black,
+    }
+})
 
 
 const mapDispatchToProps = (dispatch) => {
