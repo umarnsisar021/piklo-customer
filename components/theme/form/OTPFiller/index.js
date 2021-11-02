@@ -51,7 +51,6 @@ export default function OTPFiller(props) {
                     inputRef.current[key+1].focus();
                 }
             }
-
         }
     }
 

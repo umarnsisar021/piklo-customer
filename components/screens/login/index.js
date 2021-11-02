@@ -20,6 +20,7 @@ import ThemeInput from '../../theme/form/Input'
 import ThemeCheckBox from '../../theme/form/CheckBox'
 import theme from '../../theme/style.js'
 import ThemeButton from '../../theme/buttons';
+import { Value } from 'react-native-reanimated';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -215,7 +216,7 @@ function Login (props){
                 }}
                 Label="Username/Email"
                 name='username'
-                defaultValue=""
+                defaultValue="democustomer"
                 rules={{ required: true }}
                 error={formErrors.password}
               />
@@ -224,16 +225,18 @@ function Login (props){
                 InputConatainerStyle={{ width: '85%' }}
                 Label="Password"
                 Icon={<Icon  name='lock-open-outline' type='ionicon' color={theme.black.color}  />}
+
                 TextInput={{
                   placeholder:'',
                   textContentType:'password',
-                  secureTextEntry:passwordView
+                  secureTextEntry:passwordView,
+
                 }}
                 IconRight={<Icon onPress={()=>{togglePassword()}} name='eye-outline' type='ionicon' color='gray'  />}
                 name='password'
                 rules={{ required: true }}
                 error={formErrors.password}
-                defaultValue=""
+                defaultValue="123456"
               />
               <View style={{flexDirection:'row',width:'100%',justifyContent:'space-between',alignItems:'center'}}>
                 <ThemeCheckBox LabelProps={{ style: { ...theme.black}}} hooks={true} label={"Remember Me"} sethookValue={formMethods.setValue} name={'remember_me'} />

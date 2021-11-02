@@ -1,15 +1,14 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView, Image } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Animated, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView, Image } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
-import { Icon, CheckBox } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { StatusBar } from 'expo-status-bar';
 import DraggableFlatList, { ScaleDecorator } from "react-native-draggable-flatlist";
 
 // Theme Elements
 import theme from '../../../theme/style'
-import notification from '../../../../assets/app/notification.png'
 import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
 import ThemeButton from '../../../theme/buttons';
@@ -98,21 +97,22 @@ function JobCreatePickups(props) {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 30, paddingBottom: 0, marginTop: 20 }}>
+                <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 20, paddingBottom: 30, marginTop: 20, maxHeight: minHeight-170}}>
                     <StatusBar backgroundColor="transparent" />
 
                     <View style={{ ...theme.py_15 }}>
                         <LocationListComponent data={locations} setData={setLocations} />
                     </View>
+
+
+
                 </ScrollView>
-                <View style={{ ...theme.py_20 , position:'relative' }}>
-                    <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20,flexDirection:'row',justifyContent:'center'}}>
-                        <ThemeButton
-                            onPressAction={() => {
-                                //props.navigation.navigate('Login')
-                            }}
-                            style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
-                    </View>
+                <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>
+                    <ThemeButton
+                        onPressAction={() => {
+                            //props.navigation.navigate('Login')
+                        }}
+                        style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
                 </View>
                 <LocationModal show={showModal} onClose={handleHideModal} locations={locations} onSubmit={handleAddLocation} />
             </SafeAreaView >
@@ -126,12 +126,31 @@ function JobCreatePickups(props) {
 
 
 const LocationListComponent = (props)=>{
-
     const [selected, setSelected] = React.useState(null);
     let DataLength = Object.keys(props.data).length;
+    let slideAnim  = [];
+    Object.keys(props.data).map((v,key)=>{
+      slideAnim[key] = React.createRef(new Animated.Value(50)).current;
+    })
+    const slideIn = (key) => {
+        // Will change fadeAnim value to 1 in 5 seconds
+        Animated.timing(slideAnim[key], {
+            toValue: 0,
+            duration: 2000,
+            useNativeDriver: true
+        }).start();
+    };
 
+    const slideOut = (key) => {
+        // Will change fadeAnim value to 0 in 3 seconds
+        Animated.timing(slideAnim[key], {
+            toValue: 30,
+            duration: 3000,
+            useNativeDriver: true
+        }).start();
+    };
+    // List Item Connecting Line
     const ConnectBottomLine = ({index,length}) =>{
-
         if (index == (length-1)){
             return null
         }
@@ -141,33 +160,45 @@ const LocationListComponent = (props)=>{
        }
     }
 
+    const ConnectListItemComponent = ({ index, item }) => {
+        return <View style={{...styles.C_L_I_C_MAIN, top: index === 0 ? '50%' : '0%',}}>
+                    <View style={{...styles.C_L_I_C_H_LINE,top: index === 0 ? '0%' : '98%',}}>
+                        <View style={{ ...styles.C_L_I_C_BULLET, }}>
+                            {item.location_type == '1' ?
+                                <Text style={{ ...styles.C_L_I_C_BULLET_TEXT }}>P</Text> :
+                                <Text style={{ ...styles.C_L_I_C_BULLET_TEXT }}>D</Text>
+                            }
+                        </View>
+                    </View>
+                </View>
+    }
+
     React.useEffect(()=>{
 
     }, [props.data]);
+    // List Item Render Component
     const renderItem = ({ item, index, drag, isActive }) => {
 
         return <TouchableOpacity
                     onLongPress={drag}
-                    onPress={() => setSelected(item.latitude)}
+                    onPress={() => {
+                        setSelected(index);
+
+                    }}
                     disabled={isActive}
                     style={{paddingLeft:20}}
                 >
-                    <View style={{position:'absolute', width:3, height:'50%',backgroundColor:theme.purple.color,zIndex:100,top: index  === 0 ? '50%':'0%',left:-0}}>
-                        <View style={{ backgroundColor: theme.purple.color, width: 20, height: 3, top: index === 0 ? '0%' : '98%',borderRadius:50}}>
-
-                        </View>
-                        {/* Bullet */}
-                        <View style={{ backgroundColor: theme.purple.color, width: 12, height: 12, top: index === 0 ? -8 : "84%", borderRadius: 50, left:15}}>
-
-                        </View>
-                    </View>
-
+                    <ConnectListItemComponent index={index} item={item} />
+                    <ConnectBottomLine index={index} length={DataLength} />
                     <View style={styles.locationItemRow}>
 
-                        <View style={{...styles.ItemDetailContainer}}>
+                        <View style={{
+                                ...styles.ItemDetailContainer,
+                                width: selected === index ? '95%' : '100%',
+                            }}>
                             <View>
 
-                                <Text style={{ ...styles.itemAddress }}>{item.address} {index}</Text>
+                                <Text style={{ ...styles.itemAddress }}>{item.address}</Text>
                             </View>
                             <View>
                                 {
@@ -180,9 +211,13 @@ const LocationListComponent = (props)=>{
                                 <View></View>
                             </View>
                         </View>
-                        <View style={{display: selected === item.latitude ? 'flex' :'none'}}>
-                            <Image source={item.location_type == '1' ? pickupIcon : dropoffIcon} style={styles.ItemTypeImage} />
-                        </View>
+                        <Animated.View style={{ display: selected === index ? 'flex' : 'none',
+                                    transform: [{
+                                        translateX: slideAnim[index]
+                                    }]
+                        }}>
+                                <Icon type="ionicon" name="close-circle-outline" />
+                        </Animated.View>
                     </View>
                 </TouchableOpacity>
 
@@ -228,7 +263,8 @@ const styles  = StyleSheet.create({
     },
     ItemDetailContainer: {
         flexGrow: 1,
-        ...theme.px_10
+        ...theme.pl_10,
+        ...theme.pr_0
     },
     itemNote:{
         fontSize:13,
@@ -238,6 +274,37 @@ const styles  = StyleSheet.create({
     itemAddress:{
         fontSize:13,
         ...theme.black,
+    },
+    C_L_I_C_MAIN:{
+        position: 'absolute',
+        width: 3,
+        height: '50%',
+        backgroundColor: theme.purple.color,
+        zIndex: 100,
+        left: -0
+    },
+    C_L_I_C_H_LINE:{
+        backgroundColor: theme.purple.color,
+        width: 20,
+        height: 3,
+        borderRadius: 50
+    },
+    C_L_I_C_BULLET: {
+        backgroundColor: 'white',
+        width: 15,
+        height: 15,
+        top: -6.5,
+        borderRadius: 50,
+        left: 14,
+        borderColor: theme.purple.color,
+        borderWidth: 1.5,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    C_L_I_C_BULLET_TEXT: {
+        margin: 0,
+        fontWeight: '700',
+        fontSize: 10,
     }
 })
 

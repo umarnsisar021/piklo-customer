@@ -20,23 +20,17 @@ function JobCategories(props) {
     const [data, setData] = React.useState(props.appData.jobCategories);
     const [loaded, setLoaded] = React.useState(false);
     // let { id } = props.route.params;
-
-
     const CreateButtonRef = async ()=>{
         let tempArray = {};
-        await Object.values(data).map((row, key) => {
+        await Object.keys(data).map((row, key) => {
             tempArray[key] ={};
             tempArray[key].checked = false;
         });
         await setButtonRef(tempArray);
-        if(Object.keys(data).length> 0) {
-            setLoaded(true)
-        }
-
     }
     const handleSelectCategory = async (c_key,id)=>{
         let tempArray = {};
-        await Object.values(data).map((row, key) => {
+        await Object.keys(data).map((row, key) => {
             if (c_key == key){
                 tempArray[key] = {};
                 tempArray[key].checked = true;
@@ -54,13 +48,14 @@ function JobCategories(props) {
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
-        CreateButtonRef();
         const Run = async () => {
             useJwt.setToken(props.user.token);
+            await CreateButtonRef();
             await useJwt.get("Common/categories").then(async (res) => {
                 if (res.data) {
                     setData(res.data.data.categories);
-                    props.setJobCategories(res.data.data.categories);
+                    await CreateButtonRef();
+                    await props.setJobCategories(res.data.data.categories);
                     setLoaded(true);
                 }
             }).catch(function (error) {
@@ -77,8 +72,7 @@ function JobCategories(props) {
             })
         }
         Run();
-
-    }, [])
+    }, [loaded])
     if (loaded) {
 
         return (

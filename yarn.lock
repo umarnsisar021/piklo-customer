@@ -5929,10 +5929,10 @@ react-native-device-info@^0.9.1:
   resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-0.9.9.tgz#42490719b8be2b8ffe689f3c74d56884ca05c0d7"
   integrity sha1-QkkHGbi+K4/+aJ88dNVohMoFwNc=
 
-react-native-draggable-flatlist@3.0.0-beta.12:
-  version "3.0.0-beta.12"
-  resolved "https://registry.yarnpkg.com/react-native-draggable-flatlist/-/react-native-draggable-flatlist-3.0.0-beta.12.tgz#e0d4ef78e403cbf2763b46d34a4fa2bf9ec8b894"
-  integrity sha512-OoGFSTCl1yqbXXyInejr9gxDVVygJ5vZkxsevcN1/01d32RaOb6h0CZBen0glYLQA24dKuSE2apE6CgGll4Xiw==
+react-native-draggable-flatlist@2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-draggable-flatlist/-/react-native-draggable-flatlist-2.6.0.tgz#c7219104df52c7789172199a28aba0dcbc87d91f"
+  integrity sha512-/7s0NOubjlz/LskQ9QdJSgcLeZa0WC0hYpkH5H1XwJFu9pA9pqvlBzjbXkLNAZPf3zHV4aOORpEn5NaTSIMK/w==
 
 react-native-dropdown-picker@^5.1.28:
   version "5.1.28"
@@ -6187,10 +6187,10 @@ readable-stream@^2.0.1, readable-stream@^2.2.2, readable-stream@~2.3.6:
     string_decoder "~1.1.1"
     util-deprecate "~1.0.1"
 
-redux-persist@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-6.0.0.tgz#b4d2972f9859597c130d40d4b146fecdab51b3a8"
-  integrity sha512-71LLMbUq2r02ng2We9S215LtPu3fY0KgaGE0k8WRgl6RkqxtGfl7HUozz1Dftwsb0D/5mZ8dwAaPbtnzfvbEwQ==
+redux-persist@5.10.0:
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
+  integrity sha512-sSJAzNq7zka3qVHKce1hbvqf0Vf5DuTVm7dr4GtsqQVOexnrvbV47RWFiPxQ8fscnyiuWyD2O92DOxPl0tGCRg==
 
 redux-thunk@^2.3.0:
   version "2.3.0"

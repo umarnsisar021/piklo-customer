@@ -13,6 +13,7 @@ import theme from '../../theme/style'
 import ThemeButton from '../../theme/buttons';
 import { Icon, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
+import Toast from 'react-native-root-toast';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
@@ -30,6 +31,8 @@ function VerifyMobile (props){
       await firebase.auth().signInWithCredential(credential);
       props.setLogin(true)
     } catch (err) {
+      setVisible(false);
+      Toast.show("Verification code is wrong.")
       console.log(err)
     }
 };

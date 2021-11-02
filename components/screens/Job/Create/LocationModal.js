@@ -1,7 +1,7 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Modal, Dimensions, Platform, StyleSheet, Image } from 'react-native';
-import { useForm, Controller, FormProvider } from "react-hook-form";
+import { Text, Keyboard, TouchableOpacity, View, Modal, Dimensions, StyleSheet, Image } from 'react-native';
+import { useForm } from "react-hook-form";
 import { connect } from 'react-redux';
 import * as Location from 'expo-location';
 import { RadioButton } from 'react-native-paper';
@@ -11,9 +11,6 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Icon } from 'react-native-elements';
 // Theme Elements
 import theme from '../../../theme/style'
-import notification from '../../../../assets/app/notification.png'
-import ScreenLoader from '../../component/ScreenLoader';
-import useJwt from '../../../util/util';
 import ThemeButton from '../../../theme/buttons';
 import Global from '../../../util/global';
 import pickupIcon from '../../../../assets/app/pickup.png'
@@ -45,6 +42,7 @@ const LocationModal = (props) => {
     const [position, setPosition] = React.useState(null);
 
     const mapRef = React.useRef();
+    const detailBoxRef = React.useRef();
     const _getLocationAsync = async () => {
         //let { status } = await Location.requestBackgroundPermissionsAsync();
         let { status } = await Location.requestForegroundPermissionsAsync()
@@ -127,7 +125,17 @@ const LocationModal = (props) => {
     React.useEffect(()=>{
         _getLocationAsync();
         _havePickup()
-    },[dropDisable])
+        //const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+            //detailBoxRef.current.setNativeProps({ style: { display: 'none' } })
+        //});
+        //const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+            //detailBoxRef.current.setNativeProps({ style: { display: 'flex' } })
+        //});
+        // return () => {
+        //     //showSubscription.remove();
+        //     //hideSubscription.remove();
+        // };
+    }, [props.show])
 
     if (position){
         return  <Modal
@@ -165,6 +173,20 @@ const LocationModal = (props) => {
                                 key: Global.GOOGLE_API_KEY,
                                 language: 'en',
                             }}
+                            textInputProps={{
+                                onFocus : ()=>{
+                                    setTimeout(() => {
+                                        detailBoxRef.current.setNativeProps({ style: { display: 'none' } })
+                                    }, 100);
+
+                                },
+                                onBlur : () => {
+                                    setTimeout(() => {
+                                        detailBoxRef.current.setNativeProps({ style: { display: 'flex' } })
+                                    }, 100);
+
+                                }
+                            }}
                         />
                     </View>
                     <MapView style={{ flex: 1 }}
@@ -198,7 +220,7 @@ const LocationModal = (props) => {
 
 
                     </MapView>
-                    <View style={{...theme.py_15 , ...theme.px_25}}>
+                    <View style={{ ...theme.py_15, ...theme.px_25 }} ref={(elem) => detailBoxRef.current = elem}>
                     <View style={{ ...theme.row, ...theme.align_center }}>
                             <View style={{...theme.row,...theme.align_center,...theme.pr_20}}>
                                 <RadioButton
@@ -290,11 +312,12 @@ const AutoSearchCompleteStyle = {
     powered: {},
     listView: {
         backgroundColor: 'transparent',
+        paddingBottom:10,
     },
     row: {
         backgroundColor: 'white',
-        padding: 13,
-        height: 44,
+        padding: 12,
+        height: 40,
         flexDirection: 'row',
         marginVertical: 5,
         borderColor: theme.purple.color,
