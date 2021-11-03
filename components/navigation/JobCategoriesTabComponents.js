@@ -37,13 +37,13 @@ function JobCategoriesTabComponents(props) {
             </View>
             <View style={{ width: '50%'}}>
                 <TouchableOpacity
-                    onPress={() => {
+                    onPress={async () => {
                         if (props.jobRequestFormData.category_id){
+                            await props.setJobRequestFormData({ ...props.jobRequestFormData, start_at:1})
                             props.navigation.navigate("JobCreatePickups")
                         }else{
                             Toast.show("Please select category!!!")
                         }
-
                     }}
                     style={{
                         ...theme.row,

@@ -34,7 +34,6 @@ function JobCategories(props) {
             if (c_key == key){
                 tempArray[key] = {};
                 tempArray[key].checked = true;
-                console.log({ ...props.jobRequestFormData, category_id: id })
                 props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id})
             }
             else{

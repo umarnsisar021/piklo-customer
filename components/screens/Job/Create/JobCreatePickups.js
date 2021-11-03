@@ -1,6 +1,6 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Animated, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView, Image } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Animated, Dimensions, Platform, StyleSheet, Alert, FlatList, SafeAreaView, Image, TouchableNativeFeedback, TouchableWithoutFeedbackBase, TouchableWithoutFeedback } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
@@ -15,6 +15,7 @@ import ThemeButton from '../../../theme/buttons';
 import LocationModal from './LocationModal';
 import pickupIcon from '../../../../assets/app/pickup.png'
 import dropoffIcon from '../../../../assets/app/dropoff.png'
+import Toast from 'react-native-root-toast';
 
 
 const minHeight = Platform.OS == "ios" ? (Dimensions.get('window').height - 30) : (Dimensions.get('window').height);
@@ -44,7 +45,56 @@ function JobCreatePickups(props) {
         setLocations(a)
         handleHideModal(false)
     }
+    /// To delete location from locations state
+    /// Data return from LocationListComponent
+    const handleRemoveLocation = async (key) => {
+        let newIndex = 0 ;
+        let indexOfItem = Object.values(locations).filter((item,index) => {
+            if (item.key !== key){
+                item.key = newIndex
+                newIndex++
+                return item
+            }
+        })
+        setLocations(indexOfItem)
+        handleHideModal(false)
+    }
+    /// To confirm the location chosen by user
+    /// Then go to next screen
+    const handleConfirmLocations =  async () =>{
+        let locationsLength = Object.keys(locations).length
+        let havePickup = false
+        await Object.values(locations).filter((item, index) => {
+            if (item.location_type == 1) {
+                havePickup = true
+            }
+        })
+        let haveDelivery = false
+        await Object.values(locations).filter((item, index) => {
+            if (item.location_type == 2) {
+                haveDelivery = true
+            }
+        })
 
+        if(havePickup){
+            if (haveDelivery){
+                props.navigation.navigate("JobCreateTimeAndFare");
+            }
+            else{
+                Toast.show('Please select minimum 1 drop off.', {
+                    position: Toast.positions.CENTER,
+                    animation: true,
+                    hideOnPress: true,
+                })
+            }
+        }else{
+            Toast.show('Please select minimum 1 pick up.', {
+                position: Toast.positions.CENTER,
+                animation: true,
+                hideOnPress: true,
+            })
+        }
+    }
 
     React.useEffect(() => {
         props.setJobRequestFormData({});
@@ -101,16 +151,17 @@ function JobCreatePickups(props) {
                     <StatusBar backgroundColor="transparent" />
 
                     <View style={{ ...theme.py_15 }}>
-                        <LocationListComponent data={locations} setData={setLocations} />
+                        <LocationListComponent
+                            data={locations}
+                            setData={setLocations}
+                            removeItem={handleRemoveLocation}
+                        />
                     </View>
-
-
-
                 </ScrollView>
                 <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>
                     <ThemeButton
                         onPressAction={() => {
-                            //props.navigation.navigate('Login')
+                           handleConfirmLocations()
                         }}
                         style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
                 </View>
@@ -127,25 +178,35 @@ function JobCreatePickups(props) {
 
 const LocationListComponent = (props)=>{
     const [selected, setSelected] = React.useState(null);
+    const [data, setData] = React.useState(props.data);
     let DataLength = Object.keys(props.data).length;
-    let slideAnim  = [];
-    Object.keys(props.data).map((v,key)=>{
-      slideAnim[key] = React.createRef(new Animated.Value(50)).current;
-    })
-    const slideIn = (key) => {
-        // Will change fadeAnim value to 1 in 5 seconds
-        Animated.timing(slideAnim[key], {
+    const scrollX = React.useRef(new Animated.Value(0)).current;
+    const [slideAnimRef, setSlideAnimRef] = React.useState([]);
+    const [loaded, setLoaded] = React.useState(false);
+
+    const initAnim  = async()=>{
+        let elRefs = [];
+        await Object.keys(props.data).map((v,key)=>{
+            elRefs[key] = React.createRef()
+            elRefs[key].current = new Animated.Value(50);
+        })
+        await setSlideAnimRef(elRefs)
+        setLoaded(true)
+    }
+    const slideIn = async (key) => {
+        // Will change fadeAnim value to 1 in 0.5 seconds
+        Animated.timing(slideAnimRef[key].current, {
             toValue: 0,
-            duration: 2000,
+            duration: 500,
             useNativeDriver: true
         }).start();
     };
 
-    const slideOut = (key) => {
-        // Will change fadeAnim value to 0 in 3 seconds
-        Animated.timing(slideAnim[key], {
-            toValue: 30,
-            duration: 3000,
+    const slideOut = async (key) => {
+        // Will change fadeAnim value to 0 in 0.5 seconds
+        Animated.timing(slideAnimRef[key].current, {
+            toValue: 50,
+            duration: 500,
             useNativeDriver: true
         }).start();
     };
@@ -174,63 +235,84 @@ const LocationListComponent = (props)=>{
     }
 
     React.useEffect(()=>{
-
-    }, [props.data]);
+        initAnim()
+    }, [DataLength]);
     // List Item Render Component
     const renderItem = ({ item, index, drag, isActive }) => {
-
-        return <TouchableOpacity
+        return <TouchableWithoutFeedback
                     onLongPress={drag}
-                    onPress={() => {
-                        setSelected(index);
-
+                    onPress={async () => {
+                        if(selected !== index){
+                            await slideOut(selected ? selected : 0)
+                            await setSelected(index);
+                            slideIn(index)
+                        }
                     }}
                     disabled={isActive}
-                    style={{paddingLeft:20}}
+
                 >
-                    <ConnectListItemComponent index={index} item={item} />
-                    <ConnectBottomLine index={index} length={DataLength} />
-                    <View style={styles.locationItemRow}>
+                    <View style={{ paddingLeft: 20 }}>
+                        <ConnectListItemComponent index={index} item={item} />
+                        <ConnectBottomLine index={index} length={DataLength} />
+                        <View style={styles.locationItemRow}>
 
-                        <View style={{
-                                ...styles.ItemDetailContainer,
-                                width: selected === index ? '95%' : '100%',
+                            <View style={{
+                                    ...styles.ItemDetailContainer,
+                                    width: selected === index ? '95%' : '100%',
+                                }}>
+                                <View>
+
+                                    <Text style={{ ...styles.itemAddress }}>{item.address}</Text>
+                                </View>
+                                <View>
+                                    {
+                                    item.note != "" ? <Text style={{ ...styles.itemNote }}>Notes: {item.note}</Text> : <></>
+                                    }
+                                </View>
+
+                                <View style={{...theme.row , ...theme.jc_space_between}}>
+                                    <View></View>
+                                    <View></View>
+                                </View>
+                            </View>
+                            <Animated.View style={{ display: selected === index ? 'flex' : 'none',
+                                        transform: [{
+                                            translateX: slideAnimRef[index] ? slideAnimRef[index].current : 50
+                                        }]
                             }}>
-                            <View>
-
-                                <Text style={{ ...styles.itemAddress }}>{item.address}</Text>
-                            </View>
-                            <View>
-                                {
-                                 item.note != "" ? <Text style={{ ...styles.itemNote }}>Notes: {item.note}</Text> : <></>
-                                }
-                            </View>
-
-                            <View style={{...theme.row , ...theme.jc_space_between}}>
-                                <View></View>
-                                <View></View>
-                            </View>
+                                <TouchableOpacity onPress={()=>{
+                                    props.removeItem(item.key);
+                                    setSelected(null)
+                                }}>
+                                    <Icon type="ionicon" name="close-circle-outline" />
+                                </TouchableOpacity>
+                            </Animated.View>
                         </View>
-                        <Animated.View style={{ display: selected === index ? 'flex' : 'none',
-                                    transform: [{
-                                        translateX: slideAnim[index]
-                                    }]
-                        }}>
-                                <Icon type="ionicon" name="close-circle-outline" />
-                        </Animated.View>
                     </View>
-                </TouchableOpacity>
+            </TouchableWithoutFeedback>
 
         ;
     };
-    if (Object.values(props.data).length > 0) {
+    if (Object.values(props.data).length > 0 && loaded !== false) {
+
         return <SafeAreaView>
                     <DraggableFlatList
                         scrollEnabled={false}
                         LisHeaderComponent={<></>}
                         ListFooterComponent={<></>}
                         data={props.data}
-                        onDragEnd={({ data }) => props.setData(data)}
+                        onDragEnd={({ data }) => {
+                            if (data[0].location_type !== 2){
+                                props.setData(data)
+                            }
+                            else{
+                                Toast.show("You can`t place drop off at first.",{
+                                    position: Toast.positions.CENTER,
+                                    animation: true,
+                                    hideOnPress: true,
+                                })
+                            }
+                        }}
                         keyExtractor={(item) => item.key.toString()}
                         renderItem={renderItem}
                     />

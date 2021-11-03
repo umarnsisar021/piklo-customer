@@ -34,6 +34,7 @@ import OrderHistory from '../screens/OrderHistory';
 import Notifications from '../screens/Notifications';
 import Profile from '../screens/Profile';
 import JobCreatePickups from '../screens/Job/Create/JobCreatePickups';
+import JobCreateTimeAndFare from '../screens/Job/Create/JobCreateTimeAndFare';
 /// Home Tabs
 import HomeTabs from './HomeTab'
 import OrderHistoryTab from './OrderHistoryTab'
@@ -201,6 +202,10 @@ const HomeStack = (props)=>(
     {/* Create Job Screens */}
     <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobCreatePickups" >
       {props => <ScreenWrapper {...props}><JobCreatePickups {...props} /></ScreenWrapper>}
+    </Stack.Screen>
+    {/* Create Job Time And Fare Screen */}
+    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobCreateTimeAndFare" >
+      {props => <ScreenWrapper {...props}><JobCreateTimeAndFare {...props} /></ScreenWrapper>}
     </Stack.Screen>
   </Stack.Navigator>
   );
