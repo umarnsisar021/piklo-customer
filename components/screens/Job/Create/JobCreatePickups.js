@@ -29,6 +29,7 @@ function JobCreatePickups(props) {
     const [locations, setLocations] = React.useState([]);
     const [loaded, setLoaded] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
+
     const handleShowModal =()=>{
         setShowModal(true)
     }
@@ -62,7 +63,6 @@ function JobCreatePickups(props) {
     /// To confirm the location chosen by user
     /// Then go to next screen
     const handleConfirmLocations =  async () =>{
-        let locationsLength = Object.keys(locations).length
         let havePickup = false
         await Object.values(locations).filter((item, index) => {
             if (item.location_type == 1) {
@@ -78,6 +78,7 @@ function JobCreatePickups(props) {
 
         if(havePickup){
             if (haveDelivery){
+                props.setJobRequestFormData({ ...props.jobRequestFormData, locations:locations})
                 props.navigation.navigate("JobCreateTimeAndFare");
             }
             else{
@@ -97,7 +98,6 @@ function JobCreatePickups(props) {
     }
 
     React.useEffect(() => {
-        props.setJobRequestFormData({});
         setLoaded(true);
         const Run = async () => {
             useJwt.setToken(props.user.token);

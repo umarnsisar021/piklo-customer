@@ -21,18 +21,24 @@ function JobCreateTimeAndFare(props) {
     const formMethods = useForm();
     let formErrors = formMethods.formState.errors;
     const [buttonRef,setButtonRef] = React.useState({});
-    const onSubmit = data => console.log(data);
+
     const [data, setData] = React.useState(props.appData.jobCategories);
     const [locations, setLocations] = React.useState([]);
     const [loaded, setLoaded] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
+    const [budgetValue, setBudgetValue] = React.useState(0.00);
     const handleShowModal =()=>{
         setShowModal(true)
     }
     const handleHideModal = () => {
         setShowModal(false)
     }
-
+    /// To confirm the time and budget
+    /// Then go to next screen
+    const onSubmit = async data => {
+        await props.setJobRequestFormData({...props.jobRequestFormData, ...data})
+        props.navigation.navigate('JobSummary')
+    };
     /// To confirm the location chosen by user
     /// Then go to next screen
     const handleConfirmLocations =  async () =>{
@@ -71,7 +77,6 @@ function JobCreateTimeAndFare(props) {
     }
 
     React.useEffect(() => {
-        props.setJobRequestFormData({});
         setLoaded(true);
         const Run = async () => {
             useJwt.setToken(props.user.token);
@@ -126,39 +131,53 @@ function JobCreateTimeAndFare(props) {
                                 InputConatainerStyle={{ width: '80%' }}
                                 IconRight={<Text style={{...theme.gray}}>Mins</Text>}
                                 TextInput={{
-                                    placeholder: '',
+                                    placeholder: '20',
                                     keyboardType:'numeric'
                                 }}
+                                IconStyle={{ ...theme.black }}
                                 Label="Estimate Time"
                                 name='estimate_time'
                                 defaultValue=""
                                 rules={{ required: true }}
-                                error={formErrors.password}
+                                error={formErrors.estimate_time}
                             />
 
                             <ThemeInput
                                 MainContainerStyle={{ marginTop: 20 }}
                                 InputConatainerStyle={{ width: '80%' }}
-                                IconRight={<Text style={{ ...theme.gray }}>Mins</Text>}
+                                IconRight={<Text style={{ ...theme.black }}>+2</Text>}
                                 TextInput={{
-                                    placeholder: '',
-                                    keyboardType: 'numeric'
+                                    placeholder: '0',
+                                    keyboardType: 'numeric',
+                                    onEndEditing:(e)=>{
+                                        setBudgetValue(formMethods.getValues('budget'))
+                                    }
                                 }}
-                                Label="Budget"
+                                IconStyle={{ ...theme.black }}
+                                Label="Budget (CAD)"
                                 name='budget'
                                 defaultValue=""
                                 rules={{ required: true }}
-                                error={formErrors.password}
+                                error={formErrors.budget}
                             />
                         </FormProvider>
+
+                        <View style={{marginTop:50,...theme.jc_center }}>
+                            <Text style={{ alignSelf: 'center', ...theme.f_34 ,...theme.heading_font, }}>
+                                {budgetValue ? parseFloat(parseFloat(budgetValue) + 2).toFixed(2) : '0.00'}
+                                <Text style={{ alignSelf: 'center', ...theme.f_18, ...theme.text_font, }}> (CAD)</Text>
+                             </Text>
+                        </View>
                     </View>
                 </ScrollView>
                 <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>
                     <ThemeButton
-                        onPressAction={() => {
-                           handleConfirmLocations()
-                        }}
-                        style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Next</ThemeButton>
+                        onPressAction={formMethods.handleSubmit(onSubmit)}
+                        style={{ width: '40%', }}
+                        height={40}
+                        textStyle={{ fontSize: 18, fontWeight: '500' }}>
+                            Next
+                    </ThemeButton>
                 </View>
 
             </SafeAreaView >

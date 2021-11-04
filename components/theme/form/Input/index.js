@@ -41,7 +41,7 @@ export default function ThemeInput(props) {
         <View style={{ marginVertical: 7, width: '100%', borderColor: error ? theme.purple.color :'#E9E8E8',borderBottomWidth:1,...props.MainContainerStyle}}>
             {props.Label ? <Animated.View style={{
                 opacity: 1
-            }}><Text style={{ ...props.IconStyle, color: '#a2a2a2' }}>{props.Label}</Text></Animated.View> : <></>}
+            }}><Text style={{  color: '#a2a2a2', ...props.IconStyle }}>{props.Label}</Text></Animated.View> : <></>}
             <View style={{flexDirection:'row'}}>
 
                 {/* {props.Icon ? <View style={{ paddingVertical: 15, paddingHorizontal: 15,...props.IconStyle}}>{props.Icon}</View> : <></>} */}

@@ -28,13 +28,13 @@ function JobCategories(props) {
         });
         await setButtonRef(tempArray);
     }
-    const handleSelectCategory = async (c_key,id)=>{
+    const handleSelectCategory = async (c_key,id,name)=>{
         let tempArray = {};
         await Object.keys(data).map((row, key) => {
             if (c_key == key){
                 tempArray[key] = {};
                 tempArray[key].checked = true;
-                props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id})
+                props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id, category_name: name})
             }
             else{
                 tempArray[key] = {};
@@ -106,7 +106,7 @@ function JobCategories(props) {
                                 return <TouchableOpacity
                                             key={key}
                                             style={stylesGrid.boxContainer}
-                                            onPress={() => { handleSelectCategory(key,row.id) }}>
+                                            onPress={() => { handleSelectCategory(key,row.id, row.name) }}>
 
                                             <CheckBox
                                                 title=''

@@ -1,7 +1,7 @@
 // ** Auth Endpoints
 
-const api_base_url = 'https://aayan.co/salal/movenpick/api/'
-const base_url = 'https://aayan.co/salal/movenpick/'
+const api_base_url = 'https://clickinfosys.com/movenpick/api/'
+const base_url = 'https://clickinfosys.com/movenpick/'
 
 export default {
   host: api_base_url,
