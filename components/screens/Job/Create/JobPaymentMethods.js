@@ -61,7 +61,7 @@ function JobPaymentMethods(props) {
 
 
     React.useEffect(() => {
-
+        console.log(props.jobRequestFormData.locations)
     }, [])
     if (loaded) {
 

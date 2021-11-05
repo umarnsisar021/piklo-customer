@@ -43,11 +43,11 @@ function JobSummary(props) {
                     <View style={{ ...styles.summaryFlexBox }}>
                             <View style={{ ...styles.summaryFlexBoxItem, borderTopWidth: 1, borderBottomWidth: 1}}>
                                 <Text style={{ ...styles.summaryFlexBoxItemHeading }}>Estimated Time</Text>
-                                <Text>30 min</Text>
+                                <Text>{props.jobRequestFormData.estimate_time} min</Text>
                             </View>
                             <View style={{ ...styles.summaryFlexBoxItem, borderLeftWidth: 1, borderTopWidth: 1, borderBottomWidth: 1, ...styles.summaryFlexBoxPadding }}>
                                 <Text style={{ ...styles.summaryFlexBoxItemHeading }}>Budget (CAD)</Text>
-                                <Text>10-12</Text>
+                                <Text>{props.jobRequestFormData.budget}-{parseFloat(props.jobRequestFormData.budget)+2}</Text>
                             </View>
                     </View>
                 </View>
