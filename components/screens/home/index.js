@@ -37,6 +37,7 @@ function Home(props) {
     }
     React.useEffect(()=>{
         Run()
+        console.log(props.user.token)
     },[])
     if(loaded){
         return (

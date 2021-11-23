@@ -1,10 +1,10 @@
 
 import * as React from 'react';
-import { Text, ScrollView, TouchableOpacity, View, Dimensions, Platform, StyleSheet, SafeAreaView, FlatList, Image, ActivityIndicator, } from 'react-native';
+import { Text, ScrollView, TouchableOpacity, View, Dimensions, Platform, StyleSheet, SafeAreaView, TouchableWithoutFeedback, } from 'react-native';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
-import { Icon, Overlay } from 'react-native-elements';
-import { RadioButton } from 'react-native-paper';
+import { Icon } from 'react-native-elements';
+
 // Theme Elements
 import theme from '../../../theme/style'
 import ScreenLoader from '../../component/ScreenLoader';
@@ -16,80 +16,18 @@ import ThemeInput from '../../../theme/form/Input';
 const minHeight = Platform.OS == "ios" ? (Dimensions.get('window').height - 30) : (Dimensions.get('window').height);
 const screenHeight = Dimensions.get('screen').height;
 
-function JobPaymentMethods(props) {
+function JobDetails(props) {
     const formMethods = useForm();
     let formErrors = formMethods.formState.errors;
     const [loaded, setLoaded] = React.useState(true);
-    const [visible, setVisible] = React.useState(false);
-    const [selectedMothod, setSelectedMothod] = React.useState(null);
-    const [data, setData] = React.useState([
-        {id:1,name:'Paypal',icon:'https://cdn-icons-png.flaticon.com/512/174/174861.png' },
-        {id: 2, name: 'Stripe', icon:'https://cdn-icons-png.flaticon.com/512/5968/5968382.png' },
-        { id: 3, name: 'Cash on Pickup', icon:'https://cdn-icons-png.flaticon.com/512/2037/2037426.png' },
-        { id: 4, name: 'Cash on Delivery', icon:'https://cdn-icons-png.flaticon.com/512/1554/1554401.png' },
-    ]);
+    const [showModal, setShowModal] = React.useState(false);
 
-    /// To confirm the time and budget
+    /// To confirm Summary
     /// Then go to next screen
     const onSubmit = async data => {
-        console.log(selectedMothod)
-        if(selectedMothod){
-            setVisible(true);
-            console.log(props.jobRequestFormData)
-            await props.setJobRequestFormData({ ...props.jobRequestFormData, payment_method: selectedMothod })
-            useJwt.post('customers/orders/request', {
-                    ...props.jobRequestFormData,
-                    is_parcel_fragile: 2,
-                    courier_detail: ""
-                }).then((res) => {
-
-                if (res) {
-                    console.log(res)
-                    setVisible(false);
-                   // props.navigation.navigate('JobDetails', { data: res.data.job_detail[0]})
-                }
-            }).catch((error) => {
-                //console.log(error.response)
-            })
-        }
-        else{
-            Toast.show("Please select payment method.", {
-                position: Toast.positions.CENTER,
-                animation: true,
-                hideOnPress: true,
-            })
-        }
-
-
+        props.navigation.navigate('JobPaymentMethods')
     };
-    /// To render Methods
-    const renderItem = ({ item, index, }) => {
-        return <TouchableOpacity onPress={()=>{
-            setSelectedMothod(item.id)
-        }}>
-            <View style={{ ...theme.row, ...theme.jc_space_between, borderColor:"#c9c9c9",borderWidth:1,borderRadius:10, height:60,...theme.my_5,...theme.bg_white,...theme.py_10,...theme.px_15,alignItems:'center'}}>
-                        <View>
-                           <View style={{flexDirection:'row',alignItems:'center'}}>
-                                <Image source={{ uri: item.icon}} style={{width:30,height:30,resizeMode:'contain'}} />
-                                <Text style={{ ...theme.ml_15, ...theme.f_16}}>{item.name}</Text>
-                           </View>
-                        </View>
-                        <View>
-                            <RadioButton
-                                value={item.id}
-                                status={selectedMothod === item.id ? 'checked' : 'unchecked'}
-                                onPress={() => setSelectedMothod(item.id)}
-                                color={theme.purple.color}
-                            />
-                        </View>
-                    </View>
-        </TouchableOpacity>
-    }
 
-
-    React.useEffect(() => {
-        console.log(props.jobRequestFormData.locations)
-    }, [])
     if (loaded) {
 
         return (
@@ -108,25 +46,15 @@ function JobPaymentMethods(props) {
                         }}>
                         <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
                     </TouchableOpacity>
-
                     <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.align_center,width:'80%'}}>
-                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Select Method</Text>
+                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Summary</Text>
                     </View>
                 </View>
-
-
                 <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 20, paddingBottom: 30, marginTop: 20, maxHeight: minHeight-170}}>
-
                     <View style={{ ...theme.py_15 }}>
-                        <FlatList
-                            data={data}
-                            keyExtractor={(item) => item.id.toString()}
-                            renderItem={renderItem}
-                        />
+
                     </View>
-
                 </ScrollView>
-
                 <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>
                     <ThemeButton
                         onPressAction={formMethods.handleSubmit(onSubmit)}
@@ -137,15 +65,6 @@ function JobPaymentMethods(props) {
                     </ThemeButton>
                 </View>
 
-                <Overlay isVisible={visible} overlayStyle={{
-                    borderRadius:15,
-                    padding:15
-                }} onBackdropPress={()=>{
-                    setVisible(false)
-                }}>
-                    <ActivityIndicator size="large" color={theme.purple.color} />
-                    <Text>Submitting your request.</Text>
-                </Overlay>
             </SafeAreaView >
         )
     }
@@ -164,7 +83,7 @@ const styles  = StyleSheet.create({
     },
 
     summaryFlexBoxItem:{
-        width: '50%', flex: 1, borderColor: '#c9c9c9', paddingVertical:5
+        width: '50%', flex: 1, borderColor: '#c9c9c9', paddingVertical:5,paddingRight:5
     },
     summaryFlexBoxPadding: {
         paddingLeft:15
@@ -247,4 +166,4 @@ const mapStateToProps = (state) => {
     const { user, appData, jobRequestFormData} = state
     return { user: user, userData: user.userDetails, appData: appData, jobRequestFormData: jobRequestFormData.jobRequestFormData }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(JobPaymentMethods)
+export default connect(mapStateToProps, mapDispatchToProps)(JobDetails)

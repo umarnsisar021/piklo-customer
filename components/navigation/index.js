@@ -37,6 +37,7 @@ import JobCreatePickups from '../screens/Job/Create/JobCreatePickups';
 import JobCreateTimeAndFare from '../screens/Job/Create/JobCreateTimeAndFare';
 import JobSummary from '../screens/Job/Create/JobSummary';
 import JobPaymentMethods from '../screens/Job/Create/JobPaymentMethods';
+import JobDetails from '../screens/Job/Create/JobDetails';
 /// Home Tabs
 import HomeTabs from './HomeTab'
 import OrderHistoryTab from './OrderHistoryTab'
@@ -216,6 +217,9 @@ const HomeStack = (props)=>(
     {/* Create Job Payment Methods */}
     <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobPaymentMethods" >
       {props => <ScreenWrapper {...props}><JobPaymentMethods {...props} /></ScreenWrapper>}
+    </Stack.Screen>
+    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobDetails" >
+      {props => <ScreenWrapper {...props}><JobDetails {...props} /></ScreenWrapper>}
     </Stack.Screen>
   </Stack.Navigator>
   );

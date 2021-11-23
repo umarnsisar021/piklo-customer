@@ -30,5 +30,24 @@
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:574930189697:ios:0ba9879dbb67a32721bc80</string>
+	<key>DATABASE_URL</key>
+	<string>https://piklo-f696e.firebaseio.com</string>
+
+
+
+	<key>NSCameraUsageDescription</key>
+	<string>Allow Expo experiences to use your camera</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Allow Expo experiences to access your contacts</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Expo experiences to use your location</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Allow Expo experiences to access your microphone</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Allow Expo experiences to access your device's accelerometer</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Give Expo experiences permission to save photos</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Give Expo experiences permission to access your photos</string>
 </dict>
 </plist>
