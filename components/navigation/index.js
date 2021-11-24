@@ -95,7 +95,9 @@ const Drawer = createDrawerNavigator();
 
 const HomeStack = (props)=>(
   <Stack.Navigator>
-
+    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobDetails" >
+      {props => <ScreenWrapper {...props}><JobDetails {...props} /></ScreenWrapper>}
+    </Stack.Screen>
     <Stack.Screen options={{headerShown: false}} name="Auth">
       {props => <ScreenWrapper {...props}><Auth {...props} /></ScreenWrapper>}
     </Stack.Screen>
@@ -218,9 +220,9 @@ const HomeStack = (props)=>(
     <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobPaymentMethods" >
       {props => <ScreenWrapper {...props}><JobPaymentMethods {...props} /></ScreenWrapper>}
     </Stack.Screen>
-    <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobDetails" >
+    {/* <Stack.Screen options={{ headerShown: false, ...HeaderTheme }} name="JobDetails" >
       {props => <ScreenWrapper {...props}><JobDetails {...props} /></ScreenWrapper>}
-    </Stack.Screen>
+    </Stack.Screen> */}
   </Stack.Navigator>
   );
 

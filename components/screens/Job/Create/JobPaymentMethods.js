@@ -32,7 +32,7 @@ function JobPaymentMethods(props) {
     /// To confirm the time and budget
     /// Then go to next screen
     const onSubmit = async data => {
-        console.log(selectedMothod)
+
         if(selectedMothod){
             setVisible(true);
             console.log(props.jobRequestFormData)
@@ -40,16 +40,18 @@ function JobPaymentMethods(props) {
             useJwt.post('customers/orders/request', {
                     ...props.jobRequestFormData,
                     is_parcel_fragile: 2,
-                    courier_detail: ""
+                    courier_detail: "",
+                    starting_time:"2020-11-19 15:17:53",
+                    job_type:1,
                 }).then((res) => {
 
                 if (res) {
-                    console.log(res)
-                    setVisible(false);
-                   // props.navigation.navigate('JobDetails', { data: res.data.job_detail[0]})
+                   setVisible(false);
+                   props.navigation.navigate('JobDetails', { id: res.data.data.job_detail[0].id})
                 }
             }).catch((error) => {
-                //console.log(error.response)
+
+                setVisible(false);
             })
         }
         else{

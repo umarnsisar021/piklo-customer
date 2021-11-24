@@ -7,7 +7,10 @@ const firebaseConfig = {
     storageBucket: "piklo-f696e.appspot.com",
     messagingSenderId: "574930189697",
     appId: "1:574930189697:web:780b1ccedc46908b21bc80",
-    measurementId: "G-NXQ19CZELL"
+    measurementId: "G-NXQ19CZELL",
+    databaseURL: "https://piklo-f696e.firebaseio.com"
 };
-firebase.initializeApp(firebaseConfig);
+if (firebase.apps.length === 0) {
+    firebase.initializeApp(firebaseConfig);
+}
 export default firebase;

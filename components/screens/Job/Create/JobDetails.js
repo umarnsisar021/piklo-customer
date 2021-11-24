@@ -4,29 +4,59 @@ import { Text, ScrollView, TouchableOpacity, View, Dimensions, Platform, StyleSh
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
-
 // Theme Elements
 import theme from '../../../theme/style'
 import ScreenLoader from '../../component/ScreenLoader';
 import useJwt from '../../../util/util';
 import ThemeButton from '../../../theme/buttons';
-import Toast from 'react-native-root-toast';
-import ThemeInput from '../../../theme/form/Input';
+import firebase from 'firebase';
+
+
+
 
 const minHeight = Platform.OS == "ios" ? (Dimensions.get('window').height - 30) : (Dimensions.get('window').height);
 const screenHeight = Dimensions.get('screen').height;
 
 function JobDetails(props) {
     const formMethods = useForm();
+    //let {id} = props.route.params
+    let id =114
     let formErrors = formMethods.formState.errors;
-    const [loaded, setLoaded] = React.useState(true);
+    const [loaded, setLoaded] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
-
+    const [data, setData] = React.useState(false);
     /// To confirm Summary
     /// Then go to next screen
     const onSubmit = async data => {
         props.navigation.navigate('JobPaymentMethods')
     };
+
+    const jobStatusCheck = (rec)=>{
+        if(rec.current_status > 1){
+            setTimeout(()=>{
+                props.navigation.navigate('OngoingJob', { task_id: id, data: rec})
+            },2000)
+        }
+    }
+
+    React.useEffect(()=>{
+        firebase.database().ref('jobs/'+id).on('value', (snapshot) => {
+            const rec = snapshot.val();
+            setData(rec)
+            setLoaded(true)
+            jobStatusCheck(rec)
+          })
+    },[])
+
+    const DetailsComponent = ()=>{
+        return  <View>
+                    <Text style={{alignSelf:'center',fontWeight:'bold',...theme.f_20}}>Job ID: #{data.id}</Text>
+                    <View style={{width:'100%', height:200}}></View>
+                    <View>
+                        <Text style={{alignSelf:'center'}}>{data.current_job_status}</Text>
+                    </View>
+                </View>
+    }
 
     if (loaded) {
 
@@ -47,12 +77,12 @@ function JobDetails(props) {
                         <Icon type="feather" name="chevrons-left" size={40} color={theme.purple.color} />
                     </TouchableOpacity>
                     <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.align_center,width:'80%'}}>
-                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Summary</Text>
+                        <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font }}>Job Detail</Text>
                     </View>
                 </View>
                 <ScrollView showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.mt_40, marginBottom: 20, paddingBottom: 30, marginTop: 20, maxHeight: minHeight-170}}>
                     <View style={{ ...theme.py_15 }}>
-
+                        <DetailsComponent />
                     </View>
                 </ScrollView>
                 <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>

@@ -12,7 +12,7 @@ import MapContainer from "./MapContainer";
 import LocationsList from './LocationsList';
 import { StatusBar } from 'expo-status-bar';
 import { Icon } from 'react-native-elements';
-
+import firebase from 'firebase';
 
  function OngoingJob(props) {
 
@@ -23,9 +23,10 @@ import { Icon } from 'react-native-elements';
     const [loaded, setLoaded] = React.useState(false);
 
 
+
     React.useEffect(()=>{
 
-         useJwt.post("drivers/Jobs/job_view", { job_id: task_id }).then(async (res) => {
+        useJwt.post("drivers/Jobs/job_view", { job_id: task_id }).then(async (res) => {
              props.setJobId(task_id)
             if (res.data.data) {
 
@@ -52,6 +53,13 @@ import { Icon } from 'react-native-elements';
 
             }
         })
+        setTimeout(() => {
+            firebase.database().ref('jobs/' + task_id).on('value', (snapshot) => {
+                const rec = snapshot.val();
+                setData({...data,...rec})
+            })
+        },3000);
+
     }, [])
 
 
@@ -91,7 +99,7 @@ import { Icon } from 'react-native-elements';
                     <Text style={{ ...theme.f_30, ...theme.black, ...theme.heading_font}}>On Going Job</Text>
                 </View>
 
-                <MapContainer />
+                <MapContainer data={data} />
                 <LocationsList  data={data}/>
                 <View>
                     <Text></Text>
