@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 // Theme Elements
@@ -35,7 +34,7 @@ function BankInformation(props) {
     if(loaded){
         return (<>
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
                 <ScrollView style={{ ...theme.px_30, ...theme.py_20, ...theme.mt_40}}>
                     <Text style={{ ...theme.f_30,...theme.black, fontWeight: 'bold' }}>Bank Information</Text>
                     <Text style={{ ...theme.f_18, ...theme.orange }}>Step 4 / 5</Text>
@@ -102,7 +101,7 @@ function BankInformation(props) {
 
 
 
-            </LinearGradient>
+            </View>
 
         </>
         )

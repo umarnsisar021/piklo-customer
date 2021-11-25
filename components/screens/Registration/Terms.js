@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text,ActivityIndicator, ScrollView, TouchableOpacity, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import {  Overlay } from 'react-native-elements';
 // Theme Elements
@@ -71,7 +71,7 @@ const windowHeight = Dimensions.get('window').height;
     if(loaded){
         return (<>
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
 
                 <ScrollView style={{ ...theme.px_30, ...theme.py_20,...theme.mt_40,marginBottom:120,paddingBottom:120}}>
                     <Text style={{ ...theme.f_30,...theme.black, fontWeight: 'bold' }}>Terms of Use</Text>
@@ -130,7 +130,7 @@ const windowHeight = Dimensions.get('window').height;
                     <ActivityIndicator size="large" color="#FFA253"  />
                     <Text>Submitting your request.</Text>
                 </Overlay>
-            </LinearGradient>
+            </View>
 
         </>
         )

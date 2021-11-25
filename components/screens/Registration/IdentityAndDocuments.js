@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity,BackHandler, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm, FormProvider } from "react-hook-form";
 import ThemeDateTimePicker from '../../theme/form/ThemeDateTimePicker'
@@ -167,7 +166,7 @@ function IdentityAndDocuments(props) {
     if(loaded){
         return (<>
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
                 <ScrollView   showsVerticalScrollIndicator={false} style={{ ...theme.px_30, ...theme.py_20, ...theme.mt_40 }}>
                     <Text style={{ ...theme.f_32,...theme.black,...theme.heading_font }}>Identities & Documents</Text>
                     <Text style={{ ...theme.f_18, ...theme.orange }}>Step 2 / 5</Text>
@@ -420,7 +419,7 @@ function IdentityAndDocuments(props) {
                 </ScrollView>
 
 
-            </LinearGradient>
+            </View>
 
         </>
         )

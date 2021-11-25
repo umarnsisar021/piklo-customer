@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Text, TouchableOpacity, View, Image,StatusBar,Dimensions} from 'react-native';
 import styles from './styles';
 
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm, Controller,FormProvider } from "react-hook-form";
 //import {Verify} from '../verify/verify'
@@ -27,7 +26,7 @@ export default  function ChangePasswordMessage (props){
     <>
     <StatusBar backgroundColor="#126D5D" barStyle={'light-content'} />
 
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
 
 
           <View style={{padding:30}}>
@@ -97,7 +96,7 @@ export default  function ChangePasswordMessage (props){
                   </TouchableOpacity>
                 </View>
           </View>
-        </LinearGradient>
+        </View>
 
     </>
     )

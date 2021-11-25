@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import { Text, TouchableOpacity, View, Button , Dimensions} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm,FormProvider } from "react-hook-form";
 import Constants from 'expo-constants';
@@ -191,7 +190,7 @@ function Login (props){
 
   return(
 
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen}>
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen}>
           {/* Sign In */}
           <View style={{padding:30}}>
           <Text
@@ -297,7 +296,7 @@ function Login (props){
               <ActivityIndicator size="large" color={theme.purple.color}  />
               <Text>Submitting your request.</Text>
           </Overlay>
-        </LinearGradient>
+        </View>
     )
   }
 const mapDispatchToProps = (dispatch) => {

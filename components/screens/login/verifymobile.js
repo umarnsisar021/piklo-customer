@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import {Text, TouchableOpacity, View,Dimensions, ActivityIndicator} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 
 import { useForm, Controller,FormProvider } from "react-hook-form";
 import firebase from '../../firebase';
@@ -39,7 +38,7 @@ function VerifyMobile (props){
 
   return(
     <>
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
 
           <TouchableOpacity
             onPress={() => {
@@ -110,7 +109,7 @@ function VerifyMobile (props){
           <ActivityIndicator size="large" color={theme.purple.color} />
           <Text>Verifying...</Text>
         </Overlay>
-        </LinearGradient>
+        </View>
 
     </>
     )

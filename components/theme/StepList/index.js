@@ -2,7 +2,6 @@
 import React, { } from "react";
 import { StyleSheet, Text, View, Image, TextInput,TouchableOpacity } from 'react-native';
 import theme from '../style';
-import { LinearGradient } from 'expo-linear-gradient';
 export default function ThemeStepList(props) {
 
 
@@ -10,7 +9,7 @@ export default function ThemeStepList(props) {
         <TouchableOpacity
             onPress={props.onPress ? props.onPress : null}
             style={{...theme.row,...theme.my_15,...theme.w_100 ,...theme.align_center,...props.MainContainerStyle }}>
-            <LinearGradient
+            <View
                 colors={['#E66A71', '#CB587F',]}
                 style={{
                     ...theme.br_25,
@@ -27,7 +26,7 @@ export default function ThemeStepList(props) {
                 }}
             >
                 <Text style={{...theme.f_18,...theme.white}}>{props.bulletNumber}</Text>
-            </LinearGradient>
+            </View>
 
             <View
                 style={{

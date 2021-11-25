@@ -2,7 +2,6 @@
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform } from 'react-native';
 
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon } from 'react-native-elements';
 import { useForm} from "react-hook-form";
 // Theme Elements
@@ -88,7 +87,7 @@ function Home(props) {
                             <Text style={{ ...theme.f_16, ...theme.py_10 }}>Today's Overview</Text>
                             <View style={{ ...theme.row, ...theme.jc_space_between }}>
                                 {/* Component */}
-                                <LinearGradient
+                                <View
                                     colors={['#ffffff', '#ffffff']}
                                     style={{
                                         ...theme.w_45,
@@ -105,10 +104,10 @@ function Home(props) {
                                         <Text style={{ ...theme.text_right, ...theme.black, ...theme.f_28 , fontWeight:'600' }}>{data.total_delivers}</Text>
                                         <Text style={{ ...theme.purple, ...theme.f_14 }}>Delivered</Text>
                                     </View>
-                                </LinearGradient>
+                                </View>
                                 {/* Component End */}
                                 {/* Component */}
-                                <LinearGradient
+                                <View
                                     colors={['#ffffff', '#ffffff']}
                                     style={{
                                         ...theme.w_45,
@@ -126,7 +125,7 @@ function Home(props) {
                                         <Text style={{ ...theme.text_right, ...theme.black, ...theme.f_28 }}>{data.total_opportunities}</Text>
                                         <Text style={{ ...theme.purple, ...theme.f_14 }}>Opportunities</Text>
                                     </View>
-                                </LinearGradient>
+                                </View>
                                 {/* Component End */}
                             </View>
                         </View>

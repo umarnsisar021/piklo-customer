@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View, Dimensions, Image } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon, Overlay } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import ThemeInput from '../theme/form/Input'
@@ -44,7 +44,7 @@ function Prescreen(props) {
     return (
             <View  >
                 <StatusBar translucent backgroundColor="transparent" />
-            <LinearGradient style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }} id='Main-page' colors={['#ffffff', '#ffffff']} >
+            <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }} id='Main-page' colors={['#ffffff', '#ffffff']} >
                     <Image style={{ width: 180, height: 180, resizeMode: 'contain', }} source={splash_cat}></Image>
                     <Text style={{ fontSize: 25, color: 'black', fontFamily: 'Barlow_SemiBold', marginTop: 100, }}>Welcome to Piklo!</Text>
                     <View style={{ ...theme.row, marginTop: 20,}}>
@@ -57,7 +57,7 @@ function Prescreen(props) {
                             style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>Register</ThemeButton>
                     </View>
 
-                </LinearGradient>
+                </View>
             </View >
     )
 }

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import Toast from 'react-native-root-toast';
@@ -38,7 +38,7 @@ function VehicleInformation(props) {
         return (<>
 
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
 
                 <ScrollView style={{ ...theme.px_30, ...theme.py_20, ...theme.mt_40}}>
                     <Text style={{ ...theme.f_30, ...theme.black, fontWeight: 'bold' }}>Vehicle Information</Text>
@@ -127,7 +127,7 @@ function VehicleInformation(props) {
                         </View>
                     </View>
                 </ScrollView>
-            </LinearGradient>
+            </View>
 
         </>
         )

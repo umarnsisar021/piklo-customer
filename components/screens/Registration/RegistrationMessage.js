@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text, TouchableOpacity, View, Image, StatusBar, Dimensions } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 
@@ -23,7 +23,7 @@ export default function RegistrationMessage(props) {
   return (<>
 
 
-    <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
+    <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
         <View style={{ padding: 30, ...theme.mt_40 }}>
         <Text style={{ ...theme.f_30, ...theme.black,...theme.heading_font}}>Application Submitted</Text>
         <Text style={{ ...theme.f_16, ...theme.gray }}>Your account is being verified, and
@@ -49,7 +49,7 @@ additional information.</Text>
 
           </View>
         </View>
-      </LinearGradient>
+      </View>
 
     </>
   )

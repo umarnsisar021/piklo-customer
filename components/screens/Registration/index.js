@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text, TouchableOpacity, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 
@@ -23,7 +23,7 @@ function DriverRegistration(props) {
     return (<>
 
 
-        <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
+        <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{...theme.main_screen}} >
             <View style={{ padding: 30 , marginTop:30 }}>
                 <Text style={{ ...theme.f_32, ...theme.black,...theme.heading_font}}>Driver Registration</Text>
                 <Text style={{ ...theme.f_16, ...theme.gray }}>Give us a bit more information and {"\n"}
@@ -66,7 +66,7 @@ function DriverRegistration(props) {
                     name="Terms of Use" bulletNumber='5' />
             </View>
 
-        </LinearGradient>
+        </View>
 
     </>
     )

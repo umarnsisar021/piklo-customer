@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View, Dimensions} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon,Overlay } from 'react-native-elements';
 import { useForm, Controller,FormProvider } from "react-hook-form";
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
@@ -144,7 +144,7 @@ function SignUp  (props){
 
   return(
     <>
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
 
           {/* Sign In */}
           <View style={{padding:30,...theme.pt_40,...theme.mt_20}}>
@@ -323,7 +323,7 @@ function SignUp  (props){
               <ActivityIndicator size="large" color={theme.purple.color}  />
               <Text>{validatingMessageText}</Text>
           </Overlay>
-        </LinearGradient>
+        </View>
 
     </>
     )

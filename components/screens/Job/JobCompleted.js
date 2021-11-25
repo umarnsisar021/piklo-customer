@@ -12,7 +12,6 @@ import MapContainer from "./MapContainer";
 import LocationsList from './LocationsList';
 /// Icons
 import checked from "../../../assets/app/checked.png";
-import { LinearGradient } from 'expo-linear-gradient';
 import ThemeButton from '../../theme/buttons';
 import moment from 'moment';
 
@@ -56,7 +55,7 @@ import dropoffPin from "../../../assets/app/dropoff.png";
     if(loaded){
         return (
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100,marginTop:20}} style={{ ...theme.px_30,}}>
 
                     <View style={{...theme.jc_center,...theme.mt_20,}}>
@@ -164,7 +163,7 @@ import dropoffPin from "../../../assets/app/dropoff.png";
                         ></ThemeButton>
                     </View>
                 </ScrollView>
-            </LinearGradient>
+            </View>
         )
     }
     else{

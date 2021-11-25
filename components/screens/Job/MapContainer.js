@@ -196,8 +196,11 @@ class MapContainer extends React.Component{
                 {/* DIRECTIONS */}
 
 
-                {/* <MapDirectionsComponents
-                        origin={this.state.region}
+                <MapDirectionsComponents
+                        origin={{
+                            latitude: 24.761002905112,
+                            longitude: 67.063211984932
+                        }}
                         apikey={GOOGLE_API_KEY} // insert your API Key here
                         strokeWidth={4}
                         mode="DRIVING"
@@ -205,10 +208,9 @@ class MapContainer extends React.Component{
                         resetOnChange={false}
                         precision={"low"}
                         timePrecision={"now"}
-                        coords={this.state.coords}
-
+                        lineDashPattern={[0]}
                         current_location_id={this.props.onGoingJob.current_location_id}
-                    /> */}
+                    />
                 </MapView.Animated>
             </View>
         )}

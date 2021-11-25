@@ -3,7 +3,6 @@ import * as React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Image,KeyboardAvoidingView , TextInput,ImageBackground , StatusBar,TouchableWithoutFeedback ,Keyboard,Dimensions} from 'react-native';
 import styles from './styles';
 import logo from '../../../assets/app/logo_1.png';
-import { LinearGradient } from 'expo-linear-gradient';
 import ElevatedView from 'react-native-elevated-view';
 import { Icon } from 'react-native-elements';
 import { useForm, Controller,FormProvider } from "react-hook-form";
@@ -33,7 +32,7 @@ export default  function VerifyMobile (props){
     <>
     <StatusBar backgroundColor="#126D5D" barStyle={'light-content'} />
 
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen}} >
 
 
           {/* Sign In */}
@@ -91,7 +90,7 @@ export default  function VerifyMobile (props){
                   </TouchableOpacity>
                 </View>
           </View>
-        </LinearGradient>
+        </View>
 
     </>
     )

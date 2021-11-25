@@ -1,7 +1,6 @@
 
 import * as React from 'react';
 import {Text, TouchableOpacity, View,Dimensions, ActivityIndicator} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Icon, Overlay } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { useForm,FormProvider } from "react-hook-form";
@@ -64,7 +63,7 @@ function VerifyMobileSignUp (props){
 
   return(
     <>
-      <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
+      <View id='Main-page' colors={['#ffffff', '#ffffff']} style={theme.main_screen} >
 
           {/* Sign In */}
           <View style={{padding:30}}>
@@ -135,7 +134,7 @@ function VerifyMobileSignUp (props){
           <ActivityIndicator size="large" color="#FFA253" />
           <Text>Verifying...</Text>
         </Overlay>
-        </LinearGradient>
+        </View>
 
     </>
     )

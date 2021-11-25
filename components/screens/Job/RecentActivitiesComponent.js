@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 

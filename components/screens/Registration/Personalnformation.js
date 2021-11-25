@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, StatusBar, Dimensions, Platform } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+
 import { Icon } from 'react-native-elements';
 import { useForm, Controller, FormProvider } from "react-hook-form";
 import Toast from 'react-native-root-toast';
@@ -100,7 +100,7 @@ const Personalnformation =(props)=> {
     if(loaded){
         return (<>
 
-            <LinearGradient id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
+            <View id='Main-page' colors={['#ffffff', '#ffffff']} style={{ ...theme.main_screen }} >
                 <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 120, paddingTop: 20  }} style={{ ...theme.px_30,marginTop:30 }}>
                     <View style={{marginTop:10}}>
                         <Text style={{ ...theme.f_30, ...theme.black,...theme.heading_font,  fontWeight: 'bold' }}>Personal Information</Text>
@@ -276,7 +276,7 @@ const Personalnformation =(props)=> {
                 </ScrollView>
 
 
-            </LinearGradient>
+            </View>
 
         </>
         )
