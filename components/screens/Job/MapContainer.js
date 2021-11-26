@@ -208,7 +208,7 @@ class MapContainer extends React.Component{
                         resetOnChange={false}
                         precision={"low"}
                         timePrecision={"now"}
-                        lineDashPattern={[0]}
+                        lineDashPattern={[null]}
                         current_location_id={this.props.onGoingJob.current_location_id}
                     />
                 </MapView.Animated>
