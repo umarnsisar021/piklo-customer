@@ -26,8 +26,7 @@ export function MapDirectionsComponents(props) {
         longitude: 67.063211984932,};
     if (loaded) {
 
-        return <MapViewDirections {...props} origin={origin}
-            destination={destination} />;
+        return <MapViewDirections {...props} origin={origin} destination={destination} />;
     }
     else {
         return null
