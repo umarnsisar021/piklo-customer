@@ -12,7 +12,6 @@ import Toast from 'react-native-root-toast';
 import { connect } from 'react-redux';
 import { validate } from '../util/fn'
 import useJwt from '../util/util';
-import DeviceInfo from 'react-native-device-info';
 import { StatusBar } from 'expo-status-bar';
 import splash_cat from '../../assets/app/splash.png';
 const windowWidth = Dimensions.get('window').width;

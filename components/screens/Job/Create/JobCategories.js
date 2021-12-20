@@ -17,28 +17,37 @@ function JobCategories(props) {
     const formMethods = useForm();
     const [buttonRef,setButtonRef] = React.useState({});
     const onSubmit = data => console.log(data);
-    const [data, setData] = React.useState(props.appData.jobCategories);
+    const [data, setData] = React.useState(props.appData.jobCategories ? props.appData.jobCategories : {});
     const [loaded, setLoaded] = React.useState(false);
     // let { id } = props.route.params;
     const CreateButtonRef = async ()=>{
-        let tempArray = {};
-        await Object.keys(data).map((row, key) => {
-            tempArray[key] ={};
-            tempArray[key].checked = false;
-        });
-        await setButtonRef(tempArray);
+
+
+        new Promise(async (res,rej)=>{
+            let tempArray = {};
+            await Object.keys(data).map((row, key) => {
+                tempArray[key] = {};
+                tempArray[key]['checked'] = false;
+            });
+            await setButtonRef(tempArray);
+            res(200)
+        }).then((res)=>{
+
+        })
+
+
     }
     const handleSelectCategory = async (c_key,id,name)=>{
         let tempArray = {};
         await Object.keys(data).map((row, key) => {
             if (c_key == key){
                 tempArray[key] = {};
-                tempArray[key].checked = true;
+                tempArray[key]['checked'] = true;
                 props.setJobRequestFormData({ ...props.jobRequestFormData, category_id: id, category_name: name})
             }
             else{
                 tempArray[key] = {};
-                tempArray[key].checked = false;
+                tempArray[key]['checked'] = false;
             }
         });
         await setButtonRef(tempArray);
@@ -49,14 +58,19 @@ function JobCategories(props) {
         props.setJobRequestFormData({});
         const Run = async () => {
             useJwt.setToken(props.user.token);
-            await CreateButtonRef();
+
+            if (Object.keys(props.appData.jobCategories).length > 0){
+                await CreateButtonRef();
+            }
             await useJwt.get("Common/categories").then(async (res) => {
                 if (res.data) {
-                    setData(res.data.data.categories);
-                    await CreateButtonRef();
+
+                    await setData(res.data.data.categories);
                     await props.setJobCategories(res.data.data.categories);
-                    setLoaded(true);
+                    await CreateButtonRef();
+                    setLoaded(true)
                 }
+
             }).catch(function (error) {
                 if (error.response) {
                     // Request made and server responded
@@ -72,7 +86,7 @@ function JobCategories(props) {
         }
         Run();
     }, [loaded])
-    if (loaded) {
+    if (loaded !== false) {
 
         return (
 
@@ -113,8 +127,8 @@ function JobCategories(props) {
                                                 checkedIcon='check-circle'
                                                 uncheckedIcon='times'
                                                 checkedColor={theme.purple.color}
-                                                checked={buttonRef[key].checked ? true: false}
-                                                containerStyle={buttonRef[key].checked ? {position:'absolute',zIndex:100,top: '-10%',right:'-10%'} : { display: 'none' }}
+                                                checked={buttonRef[key] ?  buttonRef[key].checked ? true: false : false}
+                                                containerStyle={buttonRef[key] ? buttonRef[key].checked ? { position: 'absolute', zIndex: 100, top: '-10%', right: '-10%' } : { display: 'none' } : { display: 'none' } }
 
                                             >
                                             </CheckBox>

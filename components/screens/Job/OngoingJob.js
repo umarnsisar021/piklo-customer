@@ -1,8 +1,7 @@
 
 import * as React from 'react';
 import { Text, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform, SafeAreaView, FlatList } from 'react-native';
-import { useForm, Controller, FormProvider } from "react-hook-form";
-
+import { CommonActions } from '@react-navigation/native';
 // Theme Elements
 import theme from '../../theme/style'
 import ScreenLoader from '../component/ScreenLoader';
@@ -21,8 +20,6 @@ import firebase from 'firebase';
     const [data, setData] = React.useState(props.route.params.data);
 
     const [loaded, setLoaded] = React.useState(false);
-
-
 
     React.useEffect(()=>{
 
@@ -47,22 +44,49 @@ import firebase from 'firebase';
                 }
                 await props.setPickUps(pickups_locations)
                 await props.setDropOffs(dropoff_locations)
-                setTimeout(() => {
-                    setLoaded(true)
-                }, 2500);
+
 
             }
         })
-        setTimeout(() => {
-            firebase.database().ref('jobs/' + task_id).on('value', (snapshot) => {
+        setTimeout(async() => {
+            await firebase.database().ref('jobs/' + task_id).on('value',async (snapshot) => {
                 const rec = snapshot.val();
-                setData({...data,...rec})
+                await setData({...data,...rec})
+                await preLoad(rec)
+                let currentArray = await Object.keys(rec.locations).map(key => ({ [key]: rec.locations[key] }));
+
+                for (let i = 0; i < currentArray.length; i++) {
+                    if (currentArray[i]['status'] == 0 || currentArray[i]['status'] == 1) {
+                        props.setCurrentLocationId(currentArray[i]['id'])
+                        break;
+                    }
+                }
             })
+            setLoaded(true)
         },3000);
 
     }, [])
 
-
+    const preLoad = async (rec)=>{
+        if (rec.current_status == 9){
+            const resetAction = CommonActions.reset({
+                index: 0,
+                routes: [
+                    { name: 'Home' },
+                    {
+                        name: 'JobCompleted',
+                        params: { task_id: rec.id},
+                    },
+                ],
+                key: null,
+            });
+            props.setJobId(null)
+            props.navigation.dispatch(resetAction);
+        }
+        else{
+            return true
+        }
+    }
 
 
     if(loaded){

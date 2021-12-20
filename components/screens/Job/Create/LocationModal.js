@@ -97,6 +97,13 @@ const LocationModal = (props) => {
             longitudeDelta: LONGITUDE_DELTA,
         },1500)
     }
+    const handleSubmit = async (data) => {
+        props.onSubmit(data)
+        formData.setValue("note", "")
+
+
+
+    }
 
     // Check the selected locations have pickups ,
     // If don`t then disable the dropoff radio
@@ -261,7 +268,7 @@ const LocationModal = (props) => {
                         </View>
                         <View style={{...theme.row,...theme.align_center,...theme.jc_center}}>
                             <ThemeButton
-                                onPressAction={formData.handleSubmit(props.onSubmit)}
+                                onPressAction={formData.handleSubmit(handleSubmit)}
                                 style={{ width: '40%', }} height={40} textStyle={{ fontSize: 18, fontWeight: '500' }}>
                                     Save
                             </ThemeButton>

@@ -11,9 +11,7 @@ import { useForm, Controller,FormProvider } from "react-hook-form";
 // Theme Elements
 import ThemeInput from '../../theme/form/Input'
 import theme from '../../theme/style'
-import SCREEN_HEADER from '../../../assets/app/header_branding_1.png'
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+
 
 export default  function ChangePassword (props){
   const formMethods = useForm();

@@ -151,11 +151,13 @@ function JobCreatePickups(props) {
                     <StatusBar backgroundColor="transparent" />
 
                     <View style={{ ...theme.py_15 }}>
+
                         <LocationListComponent
                             data={locations}
                             setData={setLocations}
                             removeItem={handleRemoveLocation}
                         />
+
                     </View>
                 </ScrollView>
                 <View style={{ position: 'absolute', bottom: 0, zIndex: 1000, ...theme.w_100, ...theme.px_20, flexDirection: 'row', justifyContent: 'center' }}>
@@ -296,6 +298,7 @@ const LocationListComponent = (props)=>{
     if (Object.values(props.data).length > 0 && loaded !== false) {
 
         return <SafeAreaView>
+                    <Text style={{...theme.my_15}}>Long press and drag for sort the locations</Text>
                     <DraggableFlatList
                         scrollEnabled={false}
                         LisHeaderComponent={<></>}

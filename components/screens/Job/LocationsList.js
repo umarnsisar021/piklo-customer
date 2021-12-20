@@ -5,39 +5,39 @@ import theme from '../../theme/style';
 import pickupPin from "../../../assets/app/pickup.png";
 import dropoffPin from "../../../assets/app/dropoff.png";
 import { connect } from 'react-redux';
-import {  Badge} from 'react-native-elements'
-import useJwt from '../../util/util'
 import { useNavigation } from '@react-navigation/core';
-import { CommonActions  } from '@react-navigation/native';
 import { Overlay } from 'react-native-elements';
+import jwtDefaultConfig from '../../util/jwtDefaultConfig';
+
 const ActionButtons = (props)=>{
 
     if(props.data.location_type == 1){
         if(props.data.status == 0){
             return <ThemeButton
-                onPressAction={() => props.updateLocationStatus(props.data.id,1)}
-                disabled={props.currentLocationId !== props.data.id ? true : false}
-                disabledGradientBegin={"#dedede"}
-                disabledGradientEnd={"#dedede"}
-                impact
-                text="Arrived"
-                textStyle={{ fontSize: 10 }}
-                height={30}
-                width={75}
-                style={{ padding: 5, }} />
+                        disabled={true}
+                        disabledGradientBegin={"#dbdbdb"}
+                        disabledGradientEnd={"#dbdbdb"}
+                        impact
+                        text="On Way"
+                        textStyle={{ fontSize: 10, color:'black'}}
+                        height={30}
+                        width={75}
+                        style={{ padding: 5, }}
+
+                    />
         }
         else if (props.data.status == 1){
         return <ThemeButton
-                onPressAction={() => props.updateLocationStatus(props.data.id,2)}
-                disabled={props.currentLocationId !== props.data.id ? true : false}
-                disabledGradientBegin={"#dedede"}
-                disabledGradientEnd={"#dedede"}
-                impact
-                text="Picked Up"
-                textStyle={{ fontSize: 10 }}
-                height={30}
-                width={75}
-                style={{ padding: 5, }} />
+                    disabled={false}
+                    disabledGradientBegin={"#dbdbdb"}
+                    disabledGradientEnd={"#dbdbdb"}
+                    impact
+                    text="Arrived"
+                    textStyle={{ fontSize: 10,}}
+                    height={30}
+                    width={75}
+                    style={{ padding: 5, }}
+             />
         }
         else if (props.data.status == 2){
             return  <ThemeButton
@@ -61,34 +61,35 @@ const ActionButtons = (props)=>{
             /// To show arrived button
             if(props.data.status == 0){
                 return <ThemeButton
-                onPressAction={() => props.updateDropLocationStatus(props.data.id,1)}
-                disabled={props.currentLocationId !== props.data.id ? true : false}
-                disabledGradientBegin={"#dedede"}
-                disabledGradientEnd={"#dedede"}
-                impact
-                text="Arrived"
-                textStyle={{ fontSize: 10 }}
-                height={30}
-                width={75}
-                style={{ padding: 5, }} />
+
+                            disabled={true}
+                            disabledGradientBegin={"#dbdbdb"}
+                            disabledGradientEnd={"#dbdbdb"}
+                            impact
+                            text={props.clid === props.data.id ? "On Way" : "Awaiting"}
+                            textStyle={{ fontSize: 10, color: 'black' }}
+                            height={30}
+                            width={75}
+                            style={{ padding: 5, }}
+                    />
             }
             else if(props.data.status == 1){
                return <ThemeButton
-                    onPressAction={() => props.updateDropLocationStatus(props.data.id,3)}
-                    disabled={props.currentLocationId !== props.data.id ? true : false}
-                    disabledGradientBegin={"#dedede"}
-                    disabledGradientEnd={"#dedede"}
-                    impact
-                    text="Drop"
-                    textStyle={{ fontSize: 10 }}
-                    height={30}
-                    width={75}
-                    style={{ padding: 5, }} />
+
+                        disabled={false}
+                        disabledGradientBegin={"#dedede"}
+                        disabledGradientEnd={"#dedede"}
+                        impact
+                        text="Arrived"
+                        textStyle={{ fontSize: 10 }}
+                        height={30}
+                        width={75}
+                        style={{ padding: 5, }} />
             }
             else if(props.data.status == 3){
                 return <ThemeButton
-                     onPressAction={() => props.updateDropLocationStatus(props.data.id,3)}
-                     disabled={props.currentLocationId !== props.data.id ? true : false}
+
+                     disabled={true}
                      disabledGradientBegin={"green"}
                      disabledGradientEnd={"green"}
                      impact
@@ -104,7 +105,9 @@ const ActionButtons = (props)=>{
 
 }
 
-const Item = (props) => (
+const Item = (props) =>{
+
+    return (
     <View style={{ ...theme.w_100, ...theme.py_10, ...theme.row, ...theme.jc_space_between }}>
         <View style={{ ...theme.row, ...theme.px_15, width: "60%" }} >
             <Image style={{ width: 20, height: 30, resizeMode: 'contain' }} source={props.data.location_type == 1 ? pickupPin : dropoffPin} />
@@ -115,142 +118,38 @@ const Item = (props) => (
             </View>
         </View>
         <View>
-            <ActionButtons {...props} />
+                <ActionButtons data={props.data} clid={props.currentLocationId} />
         </View>
     </View>
-);
+)};
 
 function LocationsList(props) {
     const navigation = useNavigation();
-    const [pickupData, setPickupData] = React.useState(props.onGoingJob.pickups);
-    const [dropoffData, setDropoffData] = React.useState(props.onGoingJob.dropoffs);
     const [overlayVisible, setOverlayVisible] = React.useState(false);
+    let locations = Object.keys(props.data.locations ? props.data.locations : {} ).map(key => ({ ...props.data.locations[key] }));
+    let driver_avatar = props.data.driver ? (jwtDefaultConfig.url + props.data.driver.avatar_path).replace(" ", "%20") : null
+    if (props.data.driver){
+        return (
+            <SafeAreaView style={{ borderRadius: 100 }}>
+                <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.align_center, borderBottomColor: theme.purple.color, borderBottomWidth: 1, ...theme.px_10 }}>
+                    <View style={{ ...theme.row, ...theme.jc_space_between, ...theme.pr_15, width: 125 }}>
+                        <View style={{ ...theme.py_10, ...theme.row, alignItems: 'center', }}>
+                            <Image source={{ uri: driver_avatar }} style={{ width: 40, height: 40, resizeMode: 'contain', borderRadius: 200 }} />
 
+                            <Text style={{ fontWeight: '700', ...theme.f_16, ...theme.pl_5, textTransform: 'capitalize' }}>{`${props.data.driver.first_name} ${props.data.driver.last_name}`}</Text>
 
-    const updateLocationStatus = async (id,status) => {
-        setOverlayVisible(true)
-        let pickups  = await Object.values(props.onGoingJob.pickups).map((p)=>{
-            let temp = p;
-            if(temp.id == id){
-                temp.status = status;
-            }
-            return temp
-        })
-        await props.setPickUps(pickups)
-        if (status == 2 || status == 3 ){
-            let currentArray = [...props.onGoingJob.pickups, ...props.onGoingJob.dropoffs]
-            for (let i = 0; i < currentArray.length; i++) {
-                if (currentArray[i]['status'] == 0 || currentArray[i]['status'] == 1) {
-
-                    props.setCurrentLocationId(currentArray[i]['id'])
-                    break;
-                }
-            }
-        }
-        useJwt.post('drivers/Jobs/location_status_update',{
-            job_id: props.onGoingJob.id,
-            location_id: id,
-            status: status
-        }).then(()=>{
-            setOverlayVisible(false)
-        }).catch((error)=>{
-            console.log(error.message)
-        });
-
-    }
-
-    const updateDropLocationStatus = async (id,status) => {
-        setOverlayVisible(true)
-        let dropoffs  = await Object.values(props.onGoingJob.dropoffs).map((d)=>{
-            let temp = d;
-            if(temp.id == id){
-
-                temp.status = status;
-            }
-            return temp
-        })
-        setOverlayVisible(true)
-        await props.setDropOffs(dropoffs)
-        useJwt.post('drivers/Jobs/location_status_update', {
-            job_id: props.onGoingJob.id,
-            location_id: id,
-            status: status
-        }).then(() => {
-            setOverlayVisible(false)
-         }).catch((error) => {
-            console.log(error.message)
-        });
-        let isLast = false;
-        if (status == 2 || status == 3 ){
-            let currentArray = [...props.onGoingJob.dropoffs]
-            for (let i = 0; i < currentArray.length; i++) {
-                /// if last dropoff
-                if(i == (currentArray.length - 1)){
-                    setOverlayVisible(true)
-                    useJwt.post('drivers/Jobs/complete_request', {
-                        job_id: props.onGoingJob.id,
-                    }).then(async(res) => {
-                        if (res.data.state) {
-                            setOverlayVisible(false)
-                            const resetAction = CommonActions.reset({
-                                index: 0,
-                                routes: [
-                                    { name: 'Home' },
-                                    {
-                                        name: 'JobCompleted',
-                                        params: { task_id: props.onGoingJob.id },
-                                    },
-                                ],
-                                key: null,
-                            });
-                            navigation.dispatch(resetAction);
-                        }
-
-                     }).catch((error) => {
-                         if (error.response.data.message == "Already Completed"){
-                             const resetAction = CommonActions .reset({
-                                 index: 0,
-                                 routes: [
-                                     { name: 'Home' },
-                                     {
-                                         name: 'JobCompleted',
-                                         params: { task_id: props.onGoingJob.id },
-                                     },
-                                 ],
-                                 key: null,
-                             });
-
-                             navigation.dispatch(resetAction);
-                         }
-                    });
-
-                }
-                if (currentArray[i]['status'] == 0 || currentArray[i]['status'] == 1) {
-                    props.setCurrentLocationId(currentArray[i]['id'])
-                    break;
-                }
-
-            }
-        }
-
-
-    }
-
-
-    return (
-            <SafeAreaView style={{ borderRadius:100 }}>
-                <View style={{...theme.row,...theme.jc_space_between,...theme.align_center, borderBottomColor:theme.purple.color,borderBottomWidth:1}}>
-                    <Text style={{...theme.p_15, fontWeight:'700'}}>JOB ID# {props.onGoingJob.id}</Text>
-                    <View style={{ ...theme.row, ...theme.jc_space_between,...theme.pr_15,width:125}}>
+                        </View>
                         {/* <Badge value={`${props.onGoingJob.location_distance} km`} status="success" />
-                        <Badge value={`${props.onGoingJob.location_duration} min`} status="success" /> */}
+                            <Badge value={`${props.onGoingJob.location_duration} min`} status="success" /> */}
                     </View>
+                    <Text style={{ fontWeight: '700' }}>JOB ID# {props.onGoingJob.id}</Text>
+
                 </View>
                 <FlatList
                     numColumns={1}
-                    data={[...pickupData, ...dropoffData]}
-                    renderItem={({ item }) => (<Item updateLocationStatus={updateLocationStatus} updateDropLocationStatus={updateDropLocationStatus} currentLocationId={props.onGoingJob.current_location_id} data={item} />)}
-                    keyExtractor={data => data.latitude}
+                    data={locations}
+                    renderItem={({ item }) => <Item data={item} currentLocationId={props.onGoingJob.current_location_id} />}
+                    keyExtractor={data => `${data.latitude}`}
                 />
                 <Overlay isVisible={overlayVisible} >
                     <ActivityIndicator size="large" color={theme.purple.color} />
@@ -258,6 +157,11 @@ function LocationsList(props) {
                 </Overlay>
             </SafeAreaView>
         )
+
+    }
+    else{
+        return null
+    }
 
 }
 const mapDispatchToProps = (dispatch) => {

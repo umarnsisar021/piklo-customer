@@ -41,7 +41,7 @@ function JobPaymentMethods(props) {
                     ...props.jobRequestFormData,
                     is_parcel_fragile: 2,
                     courier_detail: "",
-                    starting_time:"2020-11-19 15:17:53",
+                    starting_time:"",
                     job_type:1,
                 }).then((res) => {
 
@@ -135,7 +135,7 @@ function JobPaymentMethods(props) {
                         style={{ width: '40%', }}
                         height={40}
                         textStyle={{ fontSize: 18, fontWeight: '500' }}>
-                            Pay Now
+                            Continue
                     </ThemeButton>
                 </View>
 

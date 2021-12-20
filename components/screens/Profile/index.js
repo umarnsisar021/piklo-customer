@@ -14,6 +14,7 @@ import EditableText from 'react-native-inline-edit';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Toast from 'react-native-root-toast';
 import * as ImagePicker from 'expo-image-picker';
+import profile from '../../../assets/app/profile.png'
 
 const style = StyleSheet.create({
     container:{

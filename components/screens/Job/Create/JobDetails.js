@@ -19,8 +19,8 @@ const screenHeight = Dimensions.get('screen').height;
 
 function JobDetails(props) {
     const formMethods = useForm();
-    //let {id} = props.route.params
-    let id =117
+    let {id} = props.route.params
+    //let id = 148
     let formErrors = formMethods.formState.errors;
     const [loaded, setLoaded] = React.useState(false);
     const [showModal, setShowModal] = React.useState(false);
@@ -35,16 +35,17 @@ function JobDetails(props) {
         if(rec.current_status > 1){
             setTimeout(()=>{
                 props.navigation.navigate('OngoingJob', { task_id: id, data: rec})
-            },2000)
+            },0)
         }
     }
 
     React.useEffect(()=>{
-        firebase.database().ref('jobs/'+id).on('value', (snapshot) => {
+        firebase.database().ref('jobs/'+id).on('value', async(snapshot) => {
             const rec = snapshot.val();
-            setData(rec)
+            console.log(rec)
+            await setData(rec)
+            await jobStatusCheck(rec)
             setLoaded(true)
-            jobStatusCheck(rec)
           })
     },[])
 

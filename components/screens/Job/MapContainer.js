@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Animated, ScrollView, TouchableOpacity, View, Image, Dimensions, Platform } from 'react-native';
+import { Animated, TouchableOpacity, View, Image, Dimensions, Platform } from 'react-native';
 
-import MapView, { Camera, Marker, Polyline, PROVIDER_GOOGLE, ProviderPropType, AnimatedRegion} from 'react-native-maps';
+import MapView, { MarkerAnimated, Marker, PROVIDER_GOOGLE, ProviderPropType} from 'react-native-maps';
 // Theme Elements
-import MapViewDirections from 'react-native-maps-directions';
 const { height, width } = Dimensions.get('window');
 const LATITUDE_DELTA = 0.009;
 const LONGITUDE_DELTA = LATITUDE_DELTA * (width / height);
@@ -11,13 +10,13 @@ import DriverPin from '../../../assets/app/driver-car-pin.png'
 import pickupPin from "../../../assets/app/pickup.png";
 import dropoffPin from "../../../assets/app/dropoff.png";
 const GOOGLE_API_KEY = 'AIzaSyC7nnNdmQERibFC_DUCh926hQYrI9Q_BwA';
-import Svg, { parse, Path } from "react-native-svg";
-import * as Location from "expo-location";
+import MapDirectionsComponents from "./MapDirectionsComponents";
 import { connect } from 'react-redux';
-import MapDirectionsComponents from './MapDirectionsComponents';
 import { Icon } from 'react-native-elements/dist/icons/Icon';
 import firebase from 'firebase';
+import theme from "../../theme/style";
 
+const AnimatedImage = Animated.createAnimatedComponent(Image)
 
 class MapContainer extends React.Component{
 
@@ -46,21 +45,33 @@ class MapContainer extends React.Component{
             cameraHeading:0,
             zoom: 15,
             pitch: 15,
+            isDriveMode : false,
+            d_loc : {
+                "latitude": 24.8570901,
+                "longitude": 67.060181,
+            }
 
         };
+
+
     }
 
     _getDriverLocation = ()=>{
+
         firebase.database().ref('drivers/' + this.props.data.driver_id).on('value', (snapshot) => {
             const d_location = snapshot.val();
-            this.state.driver_current_location.timing({
-                ...d_location,
-                latitude: parseFloat(d_location.location.latitude),
-                longitude: parseFloat(d_location.location.longitude),
-
-                useNativeDriver: true,
-            }).start()
+            const { driver_current_location } = this.state;
+            const newCoordinate = {
+                latitude: d_location.location.latitude,
+                longitude: d_location.location.longitude,
+                useNativeDriver:false,
+            };
+            driver_current_location.timing(newCoordinate).start()
             this.setState({ heading: d_location.location.heading})
+            this.setState({ d_loc: {
+                latitude: d_location.location.latitude,
+                longitude: d_location.location.longitude
+            }})
             this.updateCameraHeading()
             if (this.mapRef.current) {
                 this.mapRef.current.animateCamera({
@@ -88,6 +99,7 @@ class MapContainer extends React.Component{
     }
     componentDidMount() {
         this._getDriverLocation();
+
     }
 
     getColor = (id) => {
@@ -98,32 +110,81 @@ class MapContainer extends React.Component{
             return '#a8a8a8'
         }
     }
+    unSetDriveMode =  async () =>{
+        await this.setState({
+            zoom: 13,
+            pitch: 10
+        })
+        this.setState({
+            isDriveMode: false
+        })
+    }
+    setDriveMode = async ()=>{
 
-    setDriveMode = ()=>{
-     this.setState({
-            zoom:19,
-            pitch:60
+        await this.setState({
+                zoom:19,
+                pitch:60
+            })
+        this.setState({
+            isDriveMode : true
         })
     }
 
 
-
     render() {
+
         return (
         <View style={{ flex: 1 }}>
                 <View
                     style={{ position:'absolute' ,bottom: 0,zIndex:1000,right:0 }}>
-                    <TouchableOpacity onPress={this.setDriveMode}>
+                    <TouchableOpacity onPress={()=>{
+                        if(this.state.isDriveMode){
+                            this.unSetDriveMode()
+                        }
+                        else{
+                            this.setDriveMode()
+                        }
+                       }}>
                         <Icon
                             reverse
                             name='road'
                             type='font-awesome-5'
-                            color='white'
+                            color={this.state.isDriveMode ? theme.purple.color : 'white'}
                             size={18}
                         />
                     </TouchableOpacity>
+                    <View >
+                        <TouchableOpacity onPress={()=>{
+                            if(this.state.zoom < 20){
+                                this.setState({zoom: this.state.zoom + 1})
+                            }
+                        }} >
+                            <Icon
+                                reverse
+                                name='plus'
+                                type='font-awesome-5'
+                                color={this.state.isDriveMode ? theme.purple.color : 'white'}
+                                size={18}
+
+                            />
+                        </TouchableOpacity>
+                         <TouchableOpacity onPress={()=>{
+                            if (this.state.zoom > 2 ) {
+                                this.setState({ zoom: this.state.zoom - 1 })
+                            }
+                        }} >
+                            <Icon
+                                reverse
+                                name='minus'
+                                type='font-awesome-5'
+                                color={this.state.isDriveMode ? theme.purple.color : 'white'}
+                                size={18}
+                            />
+                        </TouchableOpacity>
+                    </View>
+
                 </View>
-            <MapView.Animated style={{ flex: 1 }}
+            <MapView style={{ flex: 1 }}
                 ref={this.mapRef}
                 pitchEnabled={true}
                 zoomTapEnabled={true}
@@ -140,9 +201,6 @@ class MapContainer extends React.Component{
 
                 onRegionChangeComplete={Region =>{
 
-                    //const zoomLevel = Math.log2(360 * ((width / 256) / Region.longitudeDelta)) + 1
-
-                   // this.setState({ zoom: zoomLevel })
                     let region = {
                         latitude: this.state.region.latitude,
                         longitude: this.state.region.longitude,
@@ -154,29 +212,29 @@ class MapContainer extends React.Component{
 
 
                 }}
-                initialRegion={this.state.driver_current_location}>
+                initialRegion={this.state.region}>
 
                 {/* DRIVER COMPONENT */}
-                <Marker.Animated
-                    ref={this.markerRef}
+                 <MarkerAnimated
+                    ref={marker => {
+                        this.markerRef = marker;
+                    }}
                     coordinate={this.state.driver_current_location}
                     //rotation={parseFloat(this.state.heading - this.state.cameraHeading)}
                     rotation={this.state.heading - this.state.cameraHeading}
                     flat={false}
-                    title='Your Driver'
-                    description='Arriving in 2 mins'
+
                 >
 
                     <Image source={DriverPin} style={{ width: 30, height: 30, resizeMode: "contain",}} resizeMode="contain" />
-                </Marker.Animated>
+                </MarkerAnimated>
 
                 {/* LOCATIONS MARKER COMPONENT */}
                 {Object.values(this.state.coords).map((p, index) => {
                     if (p.location_type == 1) {
                         return <Marker key={index}
                         coordinate={{ latitude: parseFloat(p.latitude), longitude: parseFloat(p.longitude) }}
-                        title='Your Driver'
-                        description='Arriving in 2 mins'
+
                         >
                         <Image source={pickupPin} style={{ width: 30, height: 50 }} resizeMode="contain" />
                         </Marker>
@@ -184,8 +242,7 @@ class MapContainer extends React.Component{
                     if (p.location_type == 2) {
                         return <Marker key={index}
                         coordinate={{ latitude: parseFloat(p.latitude), longitude: parseFloat(p.longitude) }}
-                        title='Your Driver'
-                        description='Arriving in 2 mins'
+
                         >
                         <Image source={dropoffPin} style={{ width: 30, height: 50 }} resizeMode="contain" />
                         </Marker>
@@ -195,12 +252,8 @@ class MapContainer extends React.Component{
 
                 {/* DIRECTIONS */}
 
+                    <MapDirectionsComponents
 
-                <MapDirectionsComponents
-                        origin={{
-                            latitude: 24.761002905112,
-                            longitude: 67.063211984932
-                        }}
                         apikey={GOOGLE_API_KEY} // insert your API Key here
                         strokeWidth={4}
                         mode="DRIVING"
@@ -208,10 +261,11 @@ class MapContainer extends React.Component{
                         resetOnChange={false}
                         precision={"low"}
                         timePrecision={"now"}
-                        lineDashPattern={[null]}
+                        driver_current_location={this.state.d_loc}
                         current_location_id={this.props.onGoingJob.current_location_id}
                     />
-                </MapView.Animated>
+
+                </MapView>
             </View>
         )}
 

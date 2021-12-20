@@ -38,7 +38,7 @@ function OrderHistory(props) {
 
     const Run = async()=>{
        setLoaded(false)
-        useJwt.post("drivers/Jobs/get_jobs_list",{
+        useJwt.post("customers/Jobs/get_jobs_list",{
             limit:10,
             offset:0,
             ...dateFilter,
@@ -133,9 +133,8 @@ function OrderHistory(props) {
                     <View >
                         <Text style={{ ...theme.f_30, ...theme.black,...theme.heading_font }}>Order History</Text>
                         <View style={{...theme.row,...theme.jc_space_between}}>
-                            <Text style={{ ...theme.f_18, ...theme.gray ,...theme.text_font}}>
+                            <Text style={{ ...theme.f_16, ...theme.gray ,...theme.text_font}}>
                                 From 01 Jan 2021 To 10 Apr 2021
-
                             </Text>
                             <TouchableOpacity onPress={()=>handleOpenDatePicker()}>
                                     <Icon type="ionicon" name="calendar-outline" />
@@ -143,57 +142,7 @@ function OrderHistory(props) {
                         </View>
 
                     </View>
-                    <View  {...formMethods}>
-                        <View style={{...theme.my_10}}>
-                            <Text style={{ ...theme.f_16, ...theme.py_10, ...theme.gray }}>Jobs Overview</Text>
-                            <View style={{...theme.row,...theme.jc_space_between}}>
-                                {/* Component */}
-                                <View
-                                    colors={['#ffffff', '#ffffff']}
-                                    style={{
-                                        ...theme.w_45,
-                                        ...theme.hp_100,
-                                        ...theme.p_5 ,
-                                        ...theme.br_10,
-                                        ...theme.text_left
-                                    }}>
-                                    <Icon
-                                        style={{ alignSelf:"flex-start",opacity: 0.5}}
-                                        name="checkmark-done-outline"
-                                        type="ionicon"
-                                        size={40}
-                                        color={theme.purple.color} />
-                                    <View style={{ ...theme.absolute, right: 10, bottom: 10, ...theme.align_flex_end}}>
-                                        <Text style={{ ...theme.text_center, ...theme.black,...theme.f_28}}>{data.delivers}</Text>
-                                        <Text style={{ ...theme.purple,...theme.f_14}}>Delivered</Text>
-                                    </View>
-                                </View>
-                                {/* Component End */}
-                                {/* Component */}
-                                <View
-                                    colors={['#ffffff', '#ffffff']}
-                                    style={{
-                                        ...theme.w_45,
-                                        ...theme.hp_100,
-                                        ...theme.p_5,
-                                        ...theme.br_10,
-                                        ...theme.text_left
-                                    }}>
-                                    <Icon
-                                        style={{ alignSelf: "flex-start", opacity: 0.5 }} name="checkmark-done-outline"
-                                        type="ionicon"
-                                        size={40}
-                                        color={theme.purple.color} />
-                                    <View style={{ ...theme.absolute, right: 10, bottom: 10, ...theme.align_flex_end }}>
-                                        <Text style={{ ...theme.text_center, ...theme.black, ...theme.f_28 }}>C$ {data.revenue}</Text>
-                                        <Text style={{ ...theme.purple, ...theme.f_14}}>Revenue</Text>
-                                    </View>
-                                </View>
-                                {/* Component End */}
-                            </View>
-                        </View>
 
-                    </View>
                     <View style={{ ...theme.hp_20 }} />
                     <ActivitiesComponent  data={data.jobs}/>
                 </ScrollView>

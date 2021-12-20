@@ -24,7 +24,7 @@ import ScreenLoader from '../component/ScreenLoader';
          if(data.length > 0 ){
             return (
                 <View>
-                    <Text style={{ ...theme.f_20, color: '#707070' }}>Jobs Report</Text>
+
 
                     {/* ROW */}
 
@@ -33,8 +33,14 @@ import ScreenLoader from '../component/ScreenLoader';
                         return     <View key={index}>
                                     <TouchableOpacity
                                         onPress={()=>{
-                                            if(row.job_id == props.onGoingJob.id){
-                                                navigation.navigate("OngoingJob",{task_id:row.job_id})
+                                        if (row.current_status == 9){
+                                            navigation.navigate("JobCompleted", { task_id:row.job_id})
+                                            }
+                                            else if (props.onGoingJob.id == row.job_id){
+                                                navigation.navigate("OngoingJob", { task_id: row.job_id })
+                                            }
+                                            else{
+                                                navigation.navigate("JobDetails", { id: row.job_id })
                                             }
 
                                         }}
@@ -78,17 +84,12 @@ import ScreenLoader from '../component/ScreenLoader';
          else{
             return <View>
             <View style={{paddingHorizontal: 0, paddingVertical: 0, marginVertical: 5,}}>
-                <Text style={{ ...theme.f_20, color: '#707070' }}>Jobs Report</Text>
-                {/* ROW */}
-                <View style={{ marginTop:50}}>
-                    <View style={{...theme.row,...theme.jc_center}}>
-                         <Image source={no_data} resizeMode="contain"  style={{width:80,height:80,resizeMode:'contain'}} />
-                    </View>
 
-                </View>
+                {/* ROW */}
+
                  {/* ROW */}
                  <View style={{...theme.row,...theme.jc_center}}>
-                     <Text style={{ ...theme.f_18, color:'#7B7B7B',...theme.pl_5}}>No data found</Text>
+                     <Text style={{ ...theme.f_16, color:'#7B7B7B',...theme.pl_5}}>No data found</Text>
                  </View>
 
             </View>

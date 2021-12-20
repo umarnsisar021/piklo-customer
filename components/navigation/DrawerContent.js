@@ -94,7 +94,7 @@ const DrawerContent = (props) => {
     </View>
       <ScrollView style={{ marginTop: 20,}} contentContainerStyle={{ flexGrow: 1 }} >
         <DrawrItemComponent screen="Home" title="Dashboard" iconName="home-outline" iconFamily="ionicon"/>
-        <DrawrItemComponent screen="Notifications" title="Notifications" iconName="cart-outline" iconFamily="ionicon"/>
+        {/* <DrawrItemComponent screen="Notifications" title="Notifications" iconName="cart-outline" iconFamily="ionicon"/> */}
         <DrawrItemComponent screen="OrderHistory" title="My Tasks" iconName="log-out-outline" iconFamily="ionicon"/>
         <DrawrItemComponent screen="Profile" title="My Profile" iconName="log-out-outline" iconFamily="ionicon"/>
         <DrawrItemComponent screen="Home" title="Address Book" iconName="log-out-outline" iconFamily="ionicon"/>

@@ -3,30 +3,32 @@ import MapViewDirections from 'react-native-maps-directions';
 import { connect } from 'react-redux';
 
 export function MapDirectionsComponents(props) {
-    //const [destination, setDestination] = React.useState({ longitude: null, latitude: null})
+    const [destination, setDestination] = React.useState({ longitude: 0.000, latitude: 0.000})
+
     const [loaded, setLoaded] = React.useState(false)
     const Run = async () => {
-        let current_destination = [...props.onGoingJob.pickups, ...props.onGoingJob.dropoffs].find(data => data.id === props.onGoingJob.current_location_id)
-        current_destination = {
-            latitude: parseFloat(current_destination.latitude),
-            longitude: parseFloat(current_destination.longitude)
-        }
-        console.log(current_destination)
-        //setDestination(current_destination);
-        setLoaded(true);
+            let current_destination = [...props.onGoingJob.pickups, ...props.onGoingJob.dropoffs].find(data => data.id === props.onGoingJob.current_location_id)
+
+            current_destination = {
+                latitude: parseFloat(current_destination.latitude),
+                longitude: parseFloat(current_destination.longitude)
+            }
+
+            setDestination(current_destination);
+            //setOrigin(props.driver_current_location)
+            //console.log(props.driver_current_location)
+            setLoaded(true);
+
     }
     React.useEffect(() => {
-
         Run()
     }, [props.onGoingJob.current_location_id])
 
-    const origin = { latitude: 24.8578094, longitude: 67.0596731 };
-    const destination = {
-        latitude: 24.861002905112,
-        longitude: 67.063211984932,};
     if (loaded) {
-
-        return <MapViewDirections {...props} origin={origin} destination={destination} />;
+        //console.log(origin)
+        const origin = { latitude: props.driver_current_location.latitude, longitude: props.driver_current_location.longitude };
+        console.log(origin)
+        return <MapViewDirections  {...props} origin={origin} destination={destination} />;
     }
     else {
         return null

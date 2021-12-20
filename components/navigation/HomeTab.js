@@ -6,6 +6,7 @@ import { Icon, Switch, Overlay} from 'react-native-elements';
 import ToggleSwitch from 'toggle-switch-react-native'
 import Home from '../screens/home';
 import theme from '../theme/style'
+import ThemeButton from '../theme/buttons'
 import { render } from 'react-dom';
 import useJwt from '../util/util';
 import { connect } from 'react-redux';
@@ -81,11 +82,15 @@ function TabComponents(props) {
     return <View style={{ ...style.main }}>
         <View style={{ ...style.footer_container }}>
             <View style={{ ...theme.row, ...theme.px_10, ...theme.align_center,width:'33.333%',justifyContent:'center' }}>
-                <Icon type="feather" name="user" color="gray" />
+                <TouchableOpacity
+                    onPress={() => props.navigation.navigate("Profile")}
+                >
+                    <Icon type="feather" name="user" color="gray" />
+                </TouchableOpacity>
             </View>
             <View>
-                <TouchableOpacity
-                    onPress={() => props.navigation.navigate("JobCategories")}
+                <ThemeButton
+                    onPressAction={() => props.navigation.navigate("JobCategories")}
                     style={{
                         ...theme.row,
                         width: 60,
@@ -93,14 +98,15 @@ function TabComponents(props) {
                         ...theme.bg_white,
                         ...theme.br_50,
                         marginTop: -40,
-                        borderColor: theme.purple.color,
-                        borderWidth: 2,
+
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        padding: 0,
                     }}
+                    radius={100}
                 >
-                    <Icon type="ionicon" solid={true} name="add-outline" color={theme.purple.color} size={40} />
-                </TouchableOpacity>
+                    <Icon type="ionicon" solid={true} name="add-outline" color={theme.white.color} size={40} />
+                </ThemeButton>
             </View>
             <View style={{ ...theme.row, ...theme.px_15, ...theme.py_10, ...theme.align_center, justifyContent: 'center', width: '33.333%' }}>
                 <Icon type="feather" name="dollar-sign" color="gray" />

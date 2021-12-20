@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Piklo",
-    "slug": "App",
+    "name": "Piklo Customer",
+    "slug": "Piklo-Customer",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,7 +12,7 @@
     },
     "facebookAppId" : "4629323113765111",
 
-    "facebookDisplayName" : "Piklo",
+    "facebookDisplayName" : "Piklo Customer",
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -61,8 +61,7 @@
       "versionCode": 1,
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "foregroundImage": "./assets/iconandroid.png"
       },
       "config":{
         "googleMaps":{
